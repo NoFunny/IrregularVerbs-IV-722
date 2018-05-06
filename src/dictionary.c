@@ -44,3 +44,15 @@ struct dictionary *dictionary_init(int max_words_in_dictionary)
 	return tab;
 }
 
+void dictionary_clean(struct dictionary *tab, int max_words_in_dictionary)
+{
+	for (int i = 0; i < max_words_in_dictionary; i++) {
+
+		free(tab[i].1form);
+		free(tab[i].2form);
+		free(tab[i].3form);
+		free(tab[i].rus);
+	}
+	free(tab);
+}
+

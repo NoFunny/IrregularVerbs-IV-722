@@ -16,4 +16,6 @@ int count_string(FILE *input);
 
 struct dictionary *dictionary_init(int max_words_in_dictionary);
 
+void dictionary_clean(struct dictionary *tab, int max_words_in_dictionary);
+
 #endif
