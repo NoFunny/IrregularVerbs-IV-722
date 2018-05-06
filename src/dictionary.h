@@ -6,15 +6,17 @@
 #include "string.h"
 
 struct dictionary {
-	char *1form;
-	char *2form;
-	char *3form;
+	char *first_f;
+	char *second_f;
+	char *third_f;
 	char *rus;
 };
 
 int count_string(FILE *input);
 
 struct dictionary *dictionary_init(int max_words_in_dictionary);
+
+struct dictionary *dictionary_reading(struct dictionary *tab, int max_words_in_dictionary);
 
 void dictionary_clean(struct dictionary *tab, int max_words_in_dictionary);
 
