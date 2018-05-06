@@ -14,4 +14,6 @@ struct dictionary {
 
 int count_string(FILE *input);
 
+struct dictionary *dictionary_init(int max_words_in_dictionary);
+
 #endif
