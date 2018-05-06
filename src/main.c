@@ -20,5 +20,7 @@ int main()
 
 	dictionary_reading(tab, max_words_in_dictionary);
 
+	dictionary_clean(tab, max_words_in_dictionary);
+
 	return 0;
 }
