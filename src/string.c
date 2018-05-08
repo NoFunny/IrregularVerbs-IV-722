@@ -1,4 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "string.h"
+
+int slen(char *str)
+{
+	int count = 0;
+
+	while (str[count] != '\0') {
+		count++;
+	}
+	return count;
+}
+
+void stok_free(char** arr)
+{
+    int i = 0;
+    while(arr[i] != NULL){
+        free(arr[i++]);
+    }
+    free(arr);
+}
 
 char** stok(char* str, char delim)
 {
@@ -38,121 +60,8 @@ char** stok(char* str, char delim)
     return res;
 }
 
-void stok_free(char** arr)
-{
-    int i = 0;
-    while(arr[i] != NULL){
-        free(arr[i++]);
-    }
-    free(arr);
-}
 
-void stok_print(char** arr)
-{
-    int i = 0;
-    int j = 0;
-    while (arr[i] != NULL){
-        while (arr[i][j] != '\0'){
-            putchar(arr[i][j]);
-            j++;
-        }
-        putchar('\n');
-        i++;
-        j=0;
-    }
-}
-
-char *toLower(char *str)
-{
-	int i;
-	for(i = 0; str[i] != '\0'; i++) {
-		if(str[i] >= 'A' && str[i] <= 'Z') {
-			str[i] = str[i] + ('a' - 'A');
-		}
-	}
-	return str;
-}
-char toLowCase(char ch)
-{
-	if( ch >= 'A' && ch <= 'Z') {
-		return ch + ('a' - 'A');
-	}
-	return ch;
-
-}
-
-int isLowCase(char ch)
-{
-	if( ch >= 'a' && ch <= 'z') {
-		return 1;
-	}
-	return 0;
-	
-}
-
-int isDigit(char ch)
-{
-	if( ch >= '0' && ch <= '9') {
-		return 1;
-	}
-	return 0;
-}
-
-int isApperCase(char ch)
-{
-    if(ch >= 'A' && ch <= 'Z')
-        return 1;
-
-    return 0;
-}
-
-int slen(char *str)
-{
-	int i = 0;
-	while(*str){
-		i++;
-		str++;
-	}
-	return i;
-}
-
-void scopy(char *s1, char *s2)
-{
-	while((*s2++ = *s1++) != '\0');
-}
-
-int sequal(char *s1, char *s2)
-{
-	int i, flg = 1;
-		for(i = 0; flg && (s1[i]!='\0' || s2[i]!='\0');i++) {
-			if( s1[i]!=s2[i] ) flg = 0;
-		}
-	return flg;
-}
-
-int scmp(char *s1, char *s2)
-{
-	int i, flg = 0;
-	for( i = 0; (s1[i]==s2[i]) && s1[i]!='\0' && s2[i]!='\0'; i++);
-		if( s1[i] < s2[i] ) 
-			flg = -1; // если строки
-		else if( s1[i] > s2[i] ) 
-			flg = 1;// разной длины
-	return flg;
-}
-
-
-int schr(char *str, char ch)
-{
-	int i, index = -1;
-	for(i = 0; (str[i] != '\0') && (str[i] != ch); i++);
-		if( str[i] == ch )
-		index = i;
-
-	return index;
-}
-
-int s_stok(char *str, char delim, char *ptr[])
+int s_tok(char *str, char delim, char *ptr[])
 {
 	char *suf = str;
 	ptr[0] = str; // первое поле – начало str
@@ -166,15 +75,62 @@ int s_stok(char *str, char delim, char *ptr[])
 	return j;
 }
 
-void suntok(char *str, char delim, char *ptr[], int cnt)
+int schr(char *str, char ch)
+{
+	int i, index = -1;
+	for(i = 0; (str[i] != '\0') && (str[i] != ch); i++);
+		if( str[i] == ch )
+		index = i;
+
+	return index;
+}
+
+void scopy(char *s1, char *s2)
+{
+	while((*s2++ = *s1++) != '\0');
+}
+
+int s_cmp(char *str_1, char *str_2)
+{
+	size_t count;
+	size_t length, length_1 = slen(str_1), length_2 = slen(str_2);
+
+	if (length_1 >= length_2) {
+		length = length_1;
+	} else {
+		length = length_2;
+	}
+	for (count = 0; count < length; count++) {
+		if (str_1[count] != str_2[count]) {
+			if (str_1[count] > str_2[count]) {
+				return 1;
+			} else if (str_1[count] < str_2[count]) {
+				return -1;
+			}
+		}
+	}
+	return 0;	
+}
+
+/*int sequal(char *s1, char *s2)
+{
+	int i, flg = 1;
+		for(i = 0; flg && (s1[i]!='\0' || s2[i]!='\0');i++) {
+			if( s1[i]!=s2[i] ) flg = 0;
+		}
+	return flg;
+}*/
+
+
+/*void suntok(char *str, char delim, char *ptr[], int cnt)
 {
 	int i;
 	for(i = 1; i < cnt; i++){
 		*(ptr[i] - 1) = delim;
 	}
-}
+}*/
 
-int sspn(char *str, char *sym)
+/*int sspn(char *str, char *sym)
 {
 	int i;
 	for( i = 0; str[i] != '\0' ; i++) {
@@ -257,4 +213,63 @@ int sstr(char *text, char *pattern)
     }
  
     return -1;
+}*/
+
+/*void stok_print(char** arr)
+{
+    int i = 0;
+    int j = 0;
+    while (arr[i] != NULL){
+        while (arr[i][j] != '\0'){
+            putchar(arr[i][j]);
+            j++;
+        }
+        putchar('\n');
+        i++;
+        j=0;
+    }
 }
+
+char *toLower(char *str)
+{
+	int i;
+	for(i = 0; str[i] != '\0'; i++) {
+		if(str[i] >= 'A' && str[i] <= 'Z') {
+			str[i] = str[i] + ('a' - 'A');
+		}
+	}
+	return str;
+}
+char toLowCase(char ch)
+{
+	if( ch >= 'A' && ch <= 'Z') {
+		return ch + ('a' - 'A');
+	}
+	return ch;
+
+}
+
+int isLowCase(char ch)
+{
+	if( ch >= 'a' && ch <= 'z') {
+		return 1;
+	}
+	return 0;
+	
+}
+
+int isDigit(char ch)
+{
+	if( ch >= '0' && ch <= '9') {
+		return 1;
+	}
+	return 0;
+}
+
+int isApperCase(char ch)
+{
+    if(ch >= 'A' && ch <= 'Z')
+        return 1;
+
+    return 0;
+} */
