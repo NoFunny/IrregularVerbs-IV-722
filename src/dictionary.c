@@ -87,4 +87,3 @@ void dictionary_clean(struct dictionary *tab, int max_words_in_dictionary)
 	}
 	free(tab);
 }
-
