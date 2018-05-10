@@ -76,7 +76,6 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 int random_generator(int max_words_in_dictionary, int value[], int amount)
 {
 	int i;
-	value = realloc(value, sizeof(int)*amount);
 
 	srand(time(NULL));
 	for (i = 0; i < amount; i++) {
@@ -104,7 +103,7 @@ int random_check(int max_words_in_dictionary, int value[], int amount)
 
 int enter_words(dictionary *tab, int value[], int amount)
 {
-	int i, result;
+	int i, j, result[100][3], count = 0;
 	char buffer[100], delim = '/', *part[3];
 
 	for (i = 0; i < amount; i++) {
@@ -112,19 +111,36 @@ int enter_words(dictionary *tab, int value[], int amount)
 		scanf("%s", buffer);
 		printf("\n");
 
-		result = 0;
 		s_tok(buffer, '/', part);
 		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
-			result++;
+			result[i][0] = 0;
+		} else {
+			result[i][0] = 1;
 		}
 		if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
-			result++;
+			result[i][1] = 0;
+		} else {
+			result[i][1] = 1;
 		}
 		if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
-			result++;
+			result[i][2] = 0;
+		} else {
+			result[i][2] = 1;
 		}
-		printf("Результат = %d из 3 попаданий.\n", result);
+		for (j = 0; j < 3; j++) {
+			if (result[i][j] == 0) {
+				count++;
+			}
+		}
 	}
+
+	// Дописать развернутый вывод ошибок. 
+	/*for (i = 0; i < amount; i++) {
+		for (j = 0; j < 3; j++) {
+
+		}
+	}*/
+	printf("Ваш результат: %d правильных из %d .\n", count, amount*3);
 	return 0;
 }
 
@@ -133,3 +149,9 @@ void dictionary_clean(dictionary *tab, int value[])
 	free(tab);
 	free(value);
 }
+
+//TODO
+/*
+	1. Дописать развернутый вывод ошибок.
+	2. Написать проверку на ввод значений, чтобы избежать core dump (если ввести к примеру один символ).
+*/
