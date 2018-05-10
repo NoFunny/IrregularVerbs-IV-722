@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "interface.h"
 #include "dictionary.h"
 
 int main(void)
@@ -17,9 +18,18 @@ int main(void)
 
 	dictionary_reading(tab, max_words_in_dictionary);
 
-	printf("Какое кол-ва слов вы хотите увидеть ?\n Enter: ");
-	scanf("%d", &n);
-	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
+	if ((n = hallway()) == 0) {
+		n = 1;
+	} else if (n == 1) {
+		n = 10;
+	} else if (n == 2) {
+		n = 15;
+	} else if (n == 3) {
+		n = 25;
+	}
+
+	int *value = (int*)malloc(sizeof(int)*n);
+
 	random_generator(max_words_in_dictionary, value, n);
 	random_check(max_words_in_dictionary, value, n);
 
