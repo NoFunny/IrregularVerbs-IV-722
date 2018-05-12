@@ -103,46 +103,51 @@ int random_check(int max_words_in_dictionary, int value[], int amount)
 
 int enter_words(dictionary *tab, int value[], int amount)
 {
-	int i, j, result[100][3], count = 0;
-	char buffer[100], delim = '/', *part[3];
+    int i, j, result[100][3], count = 0;
+    char buffer[100], delim = ',', *part[3];
 
-	for (i = 0; i < amount; i++) {
-		printf("Введите 3 формы слова [%s] через '%c'.\n Enter: ", tab[value[i]].rus, delim);
-		scanf("%s", buffer);
-		printf("\n");
-
-		s_tok(buffer, '/', part);
-		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
-			result[i][0] = 0;
-		} else {
-			result[i][0] = 1;
-		}
-		if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
-			result[i][1] = 0;
-		} else {
-			result[i][1] = 1;
-		}
-		if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
-			result[i][2] = 0;
-		} else {
-			result[i][2] = 1;
-		}
-		for (j = 0; j < 3; j++) {
-			if (result[i][j] == 0) {
-				count++;
-			}
-		}
-	}
-
-	// Дописать развернутый вывод ошибок. 
-	/*for (i = 0; i < amount; i++) {
-		for (j = 0; j < 3; j++) {
-
-		}
-	}*/
-	printf("Ваш результат: %d правильных из %d .\n", count, amount*3);
-	return 0;
-}
+    for (i = 0; i < amount; i++) {
+        printf("Введите 3 формы слова [%s] через запятую.\n Enter: ", tab[value[i]].rus);
+        scanf("%s", buffer);
+        printf("\n");
+        printf("%c\n", buffer[6]);
+        if(((schr(buffer, delim) != -1)) && ((buffer[schr(buffer,delim) + 1] != '\0'))) { 
+        		printf("Зашел\n");
+        		printf("Правильный ввод слов!\n");
+        	}else{
+        		printf("Неверно\n");
+        		return 0;
+			}  
+        s_tok(buffer, delim, part);
+        if(part[3] == '\0') {
+        	printf("Incorrect Pars!!!\n");
+        	return 0;			
+        }			
+     	printf("Part:%s\n", part[0]);
+     	printf("Part:%s\n", part[1]);
+     	printf("Part:%s\n", part[2]);
+     	if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
+     	   result[i][0] = 0;
+     	} else {
+     	    result[i][0] = 1;
+     	  }
+     	if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
+     	    result[i][1] = 0;
+     	} else {
+     	    result[i][1] = 1;
+     	  }
+     	if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
+     	    result[i][2] = 0;
+       	} else {
+       	    result[i][2] = 1;
+       	  }
+       	for (j = 0; j < 3; j++) {
+       	    if (result[i][j] == 0) {
+       	        count++;
+       	    }
+ 		}
+ 	}
+}				
 
 void dictionary_clean(dictionary *tab, int value[])
 {
@@ -152,6 +157,5 @@ void dictionary_clean(dictionary *tab, int value[])
 
 //TODO
 /*
-	1. Дописать развернутый вывод ошибок.
 	2. Написать проверку на ввод значений, чтобы избежать core dump (если ввести к примеру один символ).
 */
