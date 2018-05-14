@@ -1,7 +1,3 @@
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "string.h"
 #include "dictionary.h"
 
@@ -103,50 +99,52 @@ int random_check(int max_words_in_dictionary, int value[], int amount)
 
 int enter_words(dictionary *tab, int value[], int amount)
 {
-    int i, j, result[100][3], count = 0;
-    char buffer[100], delim = ',', *part[3];
+	int i, j, result[100][3], count = 0;
+	char buffer[100], delim[6] = "/|\\,.;", *part[3];
 
-    for (i = 0; i < amount; i++) {
-        printf("Введите 3 формы слова [%s] через запятую.\n Enter: ", tab[value[i]].rus);
-        scanf("%s", buffer);
-        printf("\n");
-        printf("%c\n", buffer[6]);
-        if(((schr(buffer, delim) != -1)) && ((buffer[schr(buffer,delim) + 1] != '\0'))) { 
-        		printf("Зашел\n");
-        		printf("Правильный ввод слов!\n");
-        	}else{
-        		printf("Неверно\n");
-        		return 0;
-			}  
-        s_tok(buffer, delim, part);
-        if(part[3] == '\0') {
-        	printf("Incorrect Pars!!!\n");
-        	return 0;			
-        }			
-     	printf("Part:%s\n", part[0]);
-     	printf("Part:%s\n", part[1]);
-     	printf("Part:%s\n", part[2]);
-     	if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
-     	   result[i][0] = 0;
-     	} else {
-     	    result[i][0] = 1;
-     	  }
-     	if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
-     	    result[i][1] = 0;
-     	} else {
-     	    result[i][1] = 1;
-     	  }
-     	if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
-     	    result[i][2] = 0;
-       	} else {
-       	    result[i][2] = 1;
-       	  }
-       	for (j = 0; j < 3; j++) {
-       	    if (result[i][j] == 0) {
-       	        count++;
-       	    }
- 		}
- 	}
+	for (i = 0; i < amount; i++) {
+		printf("Введите 3 формы слова [%s] через любой из разделителей - [%s].\n Enter: ", tab[value[i]].rus, delim);
+		scanf("%s", buffer);
+		printf("\n");
+
+		if (str_tok(buffer, delim, part) != 3) {
+			while (str_tok(buffer, delim, part) != 3) {
+				printf("При вводе значений была обнаружена ошибка. Попробуйте снова.\n Enter: ");
+				scanf("%s", buffer);
+				printf("\n");
+			}
+		}
+		
+		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
+			result[i][0] = 0;
+		} else {
+			result[i][0] = 1;
+		}
+		if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
+			result[i][1] = 0;
+		} else {
+			result[i][1] = 1;
+		}
+		if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
+			result[i][2] = 0;
+		} else {
+			result[i][2] = 1;
+		}
+		for (j = 0; j < 3; j++) {
+			if (result[i][j] == 0) {
+				count++;
+			}
+		}
+	}
+
+	// Дописать развернутый вывод ошибок. 
+	/*for (i = 0; i < amount; i++) {
+		for (j = 0; j < 3; j++) {
+
+		}
+	}*/
+	printf("Ваш результат: %d правильных из %d .\n", count, amount*3);
+	return 0;
 }				
 
 void dictionary_clean(dictionary *tab, int value[])
@@ -154,8 +152,3 @@ void dictionary_clean(dictionary *tab, int value[])
 	free(tab);
 	free(value);
 }
-
-//TODO
-/*
-	2. Написать проверку на ввод значений, чтобы избежать core dump (если ввести к примеру один символ).
-*/

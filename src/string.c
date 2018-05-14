@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "string.h"
 
 int slen(char *str)
@@ -110,6 +107,35 @@ int s_cmp(char *str_1, char *str_2)
 		}
 	}
 	return 0;	
+}
+
+int str_chr(char *str, char *ch)
+{
+	int i, j;
+
+	for (i = 0; i < slen(str); i++) {
+		for (j = 0; j < slen(ch); j++) {
+			if (str[i] == ch[j]) {
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+int str_tok(char *str, char *delim, char **ptr)
+{
+	int i, j = 1;
+	char *suf = str;
+
+	ptr[0] = str;
+	while((i = str_chr(suf, delim)) >= 0) {
+		suf[i] = '\0';
+		suf = suf + i + 1;
+		ptr[j] = suf;
+		j++;
+	}
+	return j;
 }
 
 /*int sequal(char *s1, char *s2)

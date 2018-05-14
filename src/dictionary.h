@@ -1,6 +1,10 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct dictionary {
 	char *first_f;
 	char *second_f;

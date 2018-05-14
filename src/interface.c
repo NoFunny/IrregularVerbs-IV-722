@@ -1,8 +1,5 @@
-#include <string.h>
-#include <ncurses.h>
-#include <stdbool.h>
-
 #include "const.h"
+#include "interface.h"
 
 int hallway(void)
 {
