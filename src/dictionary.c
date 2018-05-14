@@ -50,7 +50,7 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	dictionary = fopen("dictionary.txt", "r");
 	if(dictionary == NULL) {
 		printf("Ошибка в считывании словаря");
-		return 0;
+		return NULL;
 	}
 	char *buffer = (char*)malloc(50*sizeof(char));
 	char  *p[10];
@@ -69,7 +69,7 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	return tab;
 }
 
-int random_generator(int max_words_in_dictionary, int value[], int amount)
+void random_generator(int max_words_in_dictionary, int value[], int amount)
 {
 	int i;
 
@@ -77,10 +77,9 @@ int random_generator(int max_words_in_dictionary, int value[], int amount)
 	for (i = 0; i < amount; i++) {
 		value[i] = rand() % max_words_in_dictionary;
 	}
-	return 0;
 }
 
-int random_check(int max_words_in_dictionary, int value[], int amount)
+void random_check(int max_words_in_dictionary, int value[], int amount)
 {
 	int i, j;
 
@@ -94,13 +93,13 @@ int random_check(int max_words_in_dictionary, int value[], int amount)
 			}
 		}
 	}
-	return 0;
 }
 
 int enter_words(dictionary *tab, int value[], int amount)
 {
-	int i, j, result[100][3], count = 0;
+	int i, j, result[100][3], count = 0, input;
 	char buffer[100], delim[6] = "/|\\,.;", *part[3];
+	char place[amount];
 
 	for (i = 0; i < amount; i++) {
 		printf("Введите 3 формы слова [%s] через любой из разделителей - [%s].\n Enter: ", tab[value[i]].rus, delim);
@@ -114,7 +113,10 @@ int enter_words(dictionary *tab, int value[], int amount)
 				printf("\n");
 			}
 		}
-		
+		if((s_cmp(tab[value[i]].first_f, part[0]) == 0) && (s_cmp(tab[value[i]].second_f, part[1]) == 0)
+				&& (s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
+			place[i] = 1;//Если три формы угаданы, то флаг = 1
+		}
 		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
 			result[i][0] = 0;
 		} else {
@@ -136,14 +138,35 @@ int enter_words(dictionary *tab, int value[], int amount)
 			}
 		}
 	}
+	printf("Ваш результат: %d правильных из %d .\n1.Cписок ошибок\n2.Выход из функции(пока что)\n->", count, amount*3);
+	scanf("%d", &input);
 
-	// Дописать развернутый вывод ошибок. 
-	/*for (i = 0; i < amount; i++) {
-		for (j = 0; j < 3; j++) {
-
+	switch( input) {
+		case 1:
+		for (i = 0; i < amount; i++) {
+			if(place[i] == 0) {
+				printf("Найдены ошибки в формах слова - %s\n", tab[value[i]].rus);
+				if(result[i][0] == 1) {
+					printf("Вы ввели - %s\tПервая форма слова - %s\n", part[0], tab[value[i]].first_f);
+				}
+				if(result[i][1] == 1) {
+					printf("Вы ввели - %s\tВторая форма слова - %s\n", part[1], tab[value[i]].second_f);
+				}
+				if(result[i][2] == 1) {
+					printf("Вы ввели - %s\tТретья форма слова - %s\n", part[2], tab[value[i]].third_f);
+				}
+			}
+			printf("\n");
 		}
-	}*/
-	printf("Ваш результат: %d правильных из %d .\n", count, amount*3);
+		break;
+		case 2:
+			return 0;
+			break;
+		default:
+			return 0;
+			break;
+	}
+	
 	return 0;
 }				
 
