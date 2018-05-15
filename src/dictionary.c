@@ -73,18 +73,11 @@ void random_generator(int max_words_in_dictionary, int value[], int amount)
 {
 	int i;
 
-	if (in == false) {
-		srand(time(NULL));
-		for (i = 0; i < amount; i++) {
-			value[i] = rand() % max_words_in_dictionary;
-		}
-	} else if (in == true) {
-		srand(time(NULL));
-		for (i = 0; i < amount + slen(invalid_input); i++) {
-			value[i] = rand() % max_words_in_dictionary;
-			if (i >= amount-1) {
-				value[i] = invalid_input[i-amount];
-			}
+	srand(time(NULL));
+	for (i = 0; i < amount; i++) {
+		value[i] = rand() % max_words_in_dictionary;
+		if (i >= amount-flag) {
+			value[i] = invalid_input[i-(amount-flag)];
 		}
 	}
 }
@@ -93,27 +86,13 @@ void random_check(int max_words_in_dictionary, int value[], int amount)
 {
 	int i, j;
 
-	if (in == false) {
-		for (i = 0; i < amount; i++) {
-			for (j = 0; j < amount; j++) {
-				if ((value[i] == value[j]) && (i != j)) {
-					do {
-						value[i] = rand() % max_words_in_dictionary;
-					} while (value[i] == value[j]);
-					in = true;
-					return random_check(max_words_in_dictionary, value, amount);
-				}
-			}
-		}
-	} else if (in == true) {
-		for (i = 0; i < amount; i++) {
-			for (j = 0; j < amount; j++) {
-				if ((value[i] == value[j]) && (i != j)) {
-					do {
-						value[i] = rand() % max_words_in_dictionary;
-					} while (value[i] == value[j]);
-					return random_check(max_words_in_dictionary, value, amount);
-				}
+	for (i = 0; i < amount; i++) {
+		for (j = 0; j < amount; j++) {
+			if ((value[i] == value[j]) && (i != j)) {
+				do {
+					value[i] = rand() % max_words_in_dictionary;
+				} while (value[i] == value[j]);
+				return random_check(max_words_in_dictionary, value, amount);
 			}
 		}
 	}

@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct dictionary {
 	char *first_f;
@@ -13,10 +12,8 @@ typedef struct dictionary {
 	char *rus;
 } dictionary;
 
-bool in = false;
 unsigned int flag;
-unsigned int max_words_in_dictionary = count_string(input);
-unsigned int invalid_input[max_words_in_dictionary];
+int invalid_input[100];
 
 // Вычисление кол-ва слов.
 int count_string(FILE *input);
