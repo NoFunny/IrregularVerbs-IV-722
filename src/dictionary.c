@@ -143,7 +143,7 @@ int enter_words(dictionary *tab, int value[], int amount)
 			flag++;
 		}
 	}
-	printf("Ваш результат: %d правильных из %d .\n1.Cписок ошибок\n2.Выход из функции(пока что)\n->", count, amount*3);
+	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", count, amount*3);
 	scanf("%d", &input);
 
 	switch(input) {
@@ -160,16 +160,16 @@ int enter_words(dictionary *tab, int value[], int amount)
 				if(result[i][2] == 1) {
 					printf("Вы ввели - %s\tТретья форма слова - %s\n", part[2], tab[value[i]].third_f);
 				}
+			} else {
+				printf("У вас нет ошибок!\n");
 			}
 			printf("\n");
 		}
 		break;
 		case 2:
 			return 0;
-			break;
 		default:
 			return 0;
-			break;
 	}
 	
 	return 0;

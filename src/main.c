@@ -5,7 +5,7 @@ int main(void)
 {
 	flag = 0;
 	FILE *input = fopen("dictionary.txt", "r");
-	int n;
+	int n, intput, game = 0;
 
 	if(input == NULL) {
 		printf("Ошибка в считывании словаря\n");
@@ -34,6 +34,21 @@ int main(void)
 
 	enter_words(tab, value, n);
 
+	while( game == 0) {
+		printf("Вы хотите продолжить тест?\n1.Да\n2.Нет\n->");
+		scanf("%d", &intput);
+		switch(intput) {
+			case 1:
+			random_generator(max_words_in_dictionary, value, n+flag);
+			random_check(max_words_in_dictionary, value, n+flag);
+			enter_words(tab, value, n+flag);
+			break;
+		case 2:
+			game = 1;
+		break;
+	}
+
+	}
 	dictionary_clean(tab, value);
 	return 0;
 }
