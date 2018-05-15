@@ -12,6 +12,7 @@ int main(void)
 		return 0;
 	}
 
+	unsigned int max_words_in_dictionary = count_string(input);
 	dictionary *tab = dictionary_init(max_words_in_dictionary);
 
 	dictionary_reading(tab, max_words_in_dictionary);
