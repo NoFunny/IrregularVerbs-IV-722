@@ -3,8 +3,9 @@
 
 int main(void)
 {
+	flag = 0;
 	FILE *input = fopen("dictionary.txt", "r");
-	int max_words_in_dictionary = count_string(input), n;
+	int n;
 
 	if(input == NULL) {
 		printf("Ошибка в считывании словаря\n");
@@ -25,7 +26,7 @@ int main(void)
 		n = 25;
 	}
 
-	int *value = (int*)malloc(sizeof(int)*n);
+	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
 
 	random_generator(max_words_in_dictionary, value, n);
 	random_check(max_words_in_dictionary, value, n);
