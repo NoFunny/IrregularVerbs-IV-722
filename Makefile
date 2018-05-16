@@ -1,4 +1,4 @@
-flags = -Wall
+flags = -Wall -Werror -std=c11
 
 all: bin build bin/verbs
 
