@@ -39,14 +39,14 @@ int main(void)
 		scanf("%d", &intput);
 		switch(intput) {
 			case 1:
-			random_generator(max_words_in_dictionary, value, n+flag);
-			random_check(max_words_in_dictionary, value, n+flag);
-			enter_words(tab, value, n+flag);
-			break;
-		case 2:
-			game = 1;
-		break;
-	}
+				random_generator(max_words_in_dictionary, value, n+flag);
+				random_check(max_words_in_dictionary, value, n+flag);
+				enter_words(tab, value, n+flag);
+				break;
+			case 2:
+				game = 1;
+				break;
+		}
 
 	}
 	dictionary_clean(tab, value);

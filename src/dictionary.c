@@ -86,6 +86,7 @@ void random_check(int max_words_in_dictionary, int value[], int amount)
 {
 	int i, j;
 
+	// Проверка значений на совпадения.
 	for (i = 0; i < amount; i++) {
 		for (j = 0; j < amount; j++) {
 			if ((value[i] == value[j]) && (i != j)) {
@@ -96,6 +97,19 @@ void random_check(int max_words_in_dictionary, int value[], int amount)
 			}
 		}
 	}
+
+	// Проверка значений на посещенные элементы.
+	for (i = 0; i < amount; i++) {
+		for (j = 0; j < visit_flag; j++) {
+			if (value[i] == array_of_visit[j]) {
+				do {
+					value[i] = rand() % max_words_in_dictionary;
+				} while (value[i] == array_of_visit[j]);
+				return random_check(max_words_in_dictionary, value, amount);
+			}
+		}
+	}
+
 }
 
 int enter_words(dictionary *tab, int value[], int amount)
@@ -141,6 +155,8 @@ int enter_words(dictionary *tab, int value[], int amount)
 		if (count != 3) {
 			invalid_input[flag] = value[i];
 			flag++;
+		} else {
+			array_of_visit[visit_flag] = value[i];
 		}
 	}
 	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", count, amount*3);
@@ -171,7 +187,6 @@ int enter_words(dictionary *tab, int value[], int amount)
 		default:
 			return 0;
 	}
-	
 	return 0;
 }				
 

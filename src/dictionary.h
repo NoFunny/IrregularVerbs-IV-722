@@ -1,5 +1,5 @@
-#ifndef DICTIONARY_H
-#define DICTIONARY_H
+#ifndef DICTIONARY
+#define DICTIONARY
 
 #include <time.h>
 #include <stdio.h>
@@ -12,7 +12,8 @@ typedef struct dictionary {
 	char *rus;
 } dictionary;
 
-unsigned int flag;
+unsigned int flag, visit_flag;
+int array_of_visit[100];
 int invalid_input[100];
 
 // Вычисление кол-ва слов.
