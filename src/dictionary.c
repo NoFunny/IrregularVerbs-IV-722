@@ -69,7 +69,23 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	return tab;
 }
 
-void random_generator(int max_words_in_dictionary, int value[], int amount)
+void random_generator(int max_words_in_dictionary, int value[], int bucket[], int amount)
+{
+	int i, x;
+
+	srand(time(NULL));
+	for (i = 0; i < amount; i++, flag_0++) {
+		x = rand() % (max_words_in_dictionary-flag_0);
+		value[i] = bucket[x];
+		bucket[x] = bucket[max_words_in_dictionary-flag_0];
+		if (i == amount-flag) {
+			value[i] = invalid_input[i-(amount-flag)];
+			flag_0--;
+		}
+	}
+}
+
+/*void random_generator(int max_words_in_dictionary, int value[], int amount)
 {
 	int i;
 
@@ -80,7 +96,7 @@ void random_generator(int max_words_in_dictionary, int value[], int amount)
 			value[i] = invalid_input[i-(amount-flag)];
 		}
 	}
-}
+}*/
 
 /*void random_check(int max_words_in_dictionary, int value[], int amount)
 {
@@ -155,9 +171,9 @@ int enter_words(dictionary *tab, int value[], int amount)
 		if (count != 3) {
 			invalid_input[flag] = value[i];
 			flag++;
-		} else {
+		}/* else {
 			array_of_visit[visit_flag] = value[i];
-		}
+		}*/
 	}
 	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", count, amount*3);
 	scanf("%d", &input);

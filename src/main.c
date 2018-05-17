@@ -3,9 +3,9 @@
 
 int main(void)
 {
-	flag = 0;
+	flag = 0, flag_0 = 0;
 	FILE *input = fopen("dictionary.txt", "r");
-	int n, intput, game = 0;
+	int i, n, intput, game = 0;
 
 	if(input == NULL) {
 		printf("Ошибка в считывании словаря\n");
@@ -28,8 +28,12 @@ int main(void)
 	}
 
 	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
+	int *bucket = (int*)malloc(sizeof(int)*max_words_in_dictionary);
+	for (i = 0; i < max_words_in_dictionary; i++) {
+		bucket[i] = i+1;
+	}
 
-	random_generator(max_words_in_dictionary, value, n);
+	random_generator(max_words_in_dictionary, value, bucket, n);
 	//random_check(max_words_in_dictionary, value, n);
 
 	enter_words(tab, value, n);
@@ -39,7 +43,7 @@ int main(void)
 		scanf("%d", &intput);
 		switch(intput) {
 			case 1:
-				random_generator(max_words_in_dictionary, value, n+flag);
+				random_generator(max_words_in_dictionary, value, bucket, n+flag);
 				//random_check(max_words_in_dictionary, value, n+flag);
 				enter_words(tab, value, n+flag);
 				break;
