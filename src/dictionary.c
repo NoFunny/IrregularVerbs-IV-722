@@ -134,6 +134,7 @@ int enter_words(dictionary *tab, int value[], int amount)
 	char buffer[100], delim[6] = "/|\\,.;", *part[3];
 
 	for (i = 0; i < amount; i++) {
+		unsigned int flag_du = flag;
 		printf("Введите 3 формы слова [%s] через любой из разделителей - [%s].\nЕсли вы не знаете слово, просто введите '-'.\n Enter: ", tab[value[i]].rus, delim);
 		scanf("%s", buffer);
 		printf("\n");
@@ -168,12 +169,32 @@ int enter_words(dictionary *tab, int value[], int amount)
 			}
 		}
 
-		if (count != 3) {
-			invalid_input[flag] = value[i];
-			flag++;
-		}/* else {
-			array_of_visit[visit_flag] = value[i];
+		if (i < (amount-flag_du)) {
+			if (count != 3) {
+				invalid_input[flag_du] = value[i];
+				flag++;
+			}
+		} else if (i >= (amount-flag_du)) {
+			if (count == 3) {
+				invalid_input[amount-flag_du] = invalid_input[flag];
+				flag--;
+			}
+		}
+
+		/*if (count != 3) {
+			if (i < (amount-flag)) {
+				invalid_input[flag] = value[i];
+				flag++;
+			}
+		}
+
+		if (i >= (amount-flag)) {
+			if (count == 3) {
+				invalid_input[amount-flag] = invalid_input[flag];
+				flag--;
+			}
 		}*/
+		printf("FLAG = [%d]\n", flag);
 	}
 	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", count, amount*3);
 	scanf("%d", &input);
