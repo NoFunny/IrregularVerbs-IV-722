@@ -12,7 +12,7 @@ int main(void)
 		return 0;
 	}
 
-	unsigned int max_words_in_dictionary = count_string(input);
+	int max_words_in_dictionary = count_string(input);
 	dictionary *tab = dictionary_init(max_words_in_dictionary);
 
 	dictionary_reading(tab, max_words_in_dictionary);
@@ -30,7 +30,7 @@ int main(void)
 	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
 
 	random_generator(max_words_in_dictionary, value, n);
-	random_check(max_words_in_dictionary, value, n);
+	//random_check(max_words_in_dictionary, value, n);
 
 	enter_words(tab, value, n);
 
@@ -40,7 +40,7 @@ int main(void)
 		switch(intput) {
 			case 1:
 				random_generator(max_words_in_dictionary, value, n+flag);
-				random_check(max_words_in_dictionary, value, n+flag);
+				//random_check(max_words_in_dictionary, value, n+flag);
 				enter_words(tab, value, n+flag);
 				break;
 			case 2:

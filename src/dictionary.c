@@ -82,7 +82,7 @@ void random_generator(int max_words_in_dictionary, int value[], int amount)
 	}
 }
 
-void random_check(int max_words_in_dictionary, int value[], int amount)
+/*void random_check(int max_words_in_dictionary, int value[], int amount)
 {
 	int i, j;
 
@@ -110,7 +110,7 @@ void random_check(int max_words_in_dictionary, int value[], int amount)
 		}
 	}
 
-}
+}*/
 
 int enter_words(dictionary *tab, int value[], int amount)
 {
