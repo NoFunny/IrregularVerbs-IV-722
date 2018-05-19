@@ -34,7 +34,6 @@ int main(void)
 	}
 
 	random_generator(max_words_in_dictionary, value, bucket, n);
-	//random_check(max_words_in_dictionary, value, n);
 
 	enter_words(tab, value, n);
 
@@ -44,7 +43,6 @@ int main(void)
 		switch(intput) {
 			case 1:
 				random_generator(max_words_in_dictionary, value, bucket, n+flag);
-				//random_check(max_words_in_dictionary, value, n+flag);
 				enter_words(tab, value, n+flag);
 				break;
 			case 2:

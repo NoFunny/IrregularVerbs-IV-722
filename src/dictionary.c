@@ -78,63 +78,20 @@ void random_generator(int max_words_in_dictionary, int value[], int bucket[], in
 		x = rand() % (max_words_in_dictionary-flag_0);
 		value[i] = bucket[x];
 		bucket[x] = bucket[max_words_in_dictionary-flag_0];
-		if (i == amount-flag) {
+		if (i >= amount-flag) {
 			value[i] = invalid_input[i-(amount-flag)];
 			flag_0--;
 		}
 	}
 }
 
-/*void random_generator(int max_words_in_dictionary, int value[], int amount)
-{
-	int i;
-
-	srand(time(NULL));
-	for (i = 0; i < amount; i++) {
-		value[i] = rand() % max_words_in_dictionary;
-		if (i >= amount-flag) {
-			value[i] = invalid_input[i-(amount-flag)];
-		}
-	}
-}*/
-
-/*void random_check(int max_words_in_dictionary, int value[], int amount)
-{
-	int i, j;
-
-	// Проверка значений на совпадения.
-	for (i = 0; i < amount; i++) {
-		for (j = 0; j < amount; j++) {
-			if ((value[i] == value[j]) && (i != j)) {
-				do {
-					value[i] = rand() % max_words_in_dictionary;
-				} while (value[i] == value[j]);
-				return random_check(max_words_in_dictionary, value, amount);
-			}
-		}
-	}
-
-	// Проверка значений на посещенные элементы.
-	for (i = 0; i < amount; i++) {
-		for (j = 0; j < visit_flag; j++) {
-			if (value[i] == array_of_visit[j]) {
-				do {
-					value[i] = rand() % max_words_in_dictionary;
-				} while (value[i] == array_of_visit[j]);
-				return random_check(max_words_in_dictionary, value, amount);
-			}
-		}
-	}
-
-}*/
-
 int enter_words(dictionary *tab, int value[], int amount)
 {
-	int i, j, result[100][3], count = 0, input;
+	int i, j, result[100][3], count = 0, input, score = 0;
 	char buffer[100], delim[6] = "/|\\,.;", *part[3];
-
+	
 	for (i = 0; i < amount; i++) {
-		unsigned int flag_du = flag;
+		int flag_du = flag;
 		printf("Введите 3 формы слова [%s] через любой из разделителей - [%s].\nЕсли вы не знаете слово, просто введите '-'.\n Enter: ", tab[value[i]].rus, delim);
 		scanf("%s", buffer);
 		printf("\n");
@@ -147,6 +104,7 @@ int enter_words(dictionary *tab, int value[], int amount)
 			}
 		}
 		
+		count = 0;
 		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
 			result[i][0] = 0;
 		} else {
@@ -166,6 +124,7 @@ int enter_words(dictionary *tab, int value[], int amount)
 		for (j = 0; j < 3; j++) {
 			if (result[i][j] == 0) {
 				count++;
+				score++;
 			}
 		}
 
@@ -174,29 +133,17 @@ int enter_words(dictionary *tab, int value[], int amount)
 				invalid_input[flag_du] = value[i];
 				flag++;
 			}
-		} else if (i >= (amount-flag_du)) {
+		}
+
+		if (i >= (amount-flag_du)) {
 			if (count == 3) {
-				invalid_input[amount-flag_du] = invalid_input[flag];
+				invalid_input[amount-flag_du] = invalid_input[flag-1];
 				flag--;
 			}
 		}
-
-		/*if (count != 3) {
-			if (i < (amount-flag)) {
-				invalid_input[flag] = value[i];
-				flag++;
-			}
-		}
-
-		if (i >= (amount-flag)) {
-			if (count == 3) {
-				invalid_input[amount-flag] = invalid_input[flag];
-				flag--;
-			}
-		}*/
-		printf("FLAG = [%d]\n", flag);
+		printf("FLAG = [%d], flag_du = [%d], amount = [%d], i = [%d]\n", flag, flag_du, amount, i);
 	}
-	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", count, amount*3);
+	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", score, amount*3);
 	scanf("%d", &input);
 
 	switch(input) {
