@@ -71,3 +71,17 @@ CTEST(string, ENTER) //Проверка ввода слов
 	const int expected = 3;
 	ASSERT_EQUAL(expected, real);
 }
+
+
+                                //DICTIONARY.C//
+CTEST(dictionary, INIT) //(NULL)Проверка инициализации словаря(Ошибочный ввод размера)
+{	//Given
+	int max_words_in_dictionary = 0;
+	int max_words_in_dictionary_1 = 100;
+	//When
+	dictionary *real = dictionary_init(max_words_in_dictionary);
+	dictionary *real1 = dictionary_init(max_words_in_dictionary_1);
+	//Then
+	ASSERT_NULL(real);
+	ASSERT_NOT_NULL(real1);
+}
