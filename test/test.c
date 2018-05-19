@@ -85,3 +85,17 @@ CTEST(dictionary, INIT) //(NULL)Проверка инициализации сл
 	ASSERT_NULL(real);
 	ASSERT_NOT_NULL(real1);
 }
+
+CTEST(dictionary, READ) //Проверка инициализации словаря
+{
+	//Given
+	char str[20] = "be;was;been;быть";
+	char delim = ';', *ptr[10];
+	
+	//When
+	int real = s_tok(str, delim, ptr);
+
+	//Then
+	const int expected = 4;
+	ASSERT_EQUAL(expected, real);
+}
