@@ -55,3 +55,19 @@ CTEST(string, S_CMP_Ok) //Проверка ввода слов
 	ASSERT_EQUAL(expected, real);
 	ASSERT_EQUAL(expected1, real1);
 }
+
+CTEST(string, ENTER) //Проверка ввода слов
+{
+	//Given
+	char str[19] = "write;wrote;written";
+	char delim[6] = "/|\\,.;", *ptr[3];
+
+	//When
+	int real = str_tok(str, delim
+
+		, ptr);
+
+	//Then
+	const int expected = 3;
+	ASSERT_EQUAL(expected, real);
+}
