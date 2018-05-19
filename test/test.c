@@ -19,3 +19,21 @@ CTEST(string, SLEN) //Проверка ввода слов
 	ASSERT_EQUAL(expected, real);
 	ASSERT_EQUAL(expected1, real1);
 }
+
+CTEST(string, SCHR) //Проверка ввода слов
+{
+	//Given
+	char str[19] = "write;wrote;written";
+ 	char ch = 'o';
+ 	char ch1 = 'c';
+	
+	//When
+	int real = schr(str, ch);
+	int real1 = schr(str, ch1);
+
+	//Then
+	const int expected = 8;
+	const int expected1 = -1;
+	ASSERT_EQUAL(expected, real);
+	ASSERT_EQUAL(expected1, real1);
+}
