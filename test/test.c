@@ -37,3 +37,21 @@ CTEST(string, SCHR) //Проверка ввода слов
 	ASSERT_EQUAL(expected, real);
 	ASSERT_EQUAL(expected1, real1);
 }
+
+CTEST(string, S_CMP_Ok) //Проверка ввода слов
+{
+	//Given
+	char str1[19] = "write;wrote;written";
+ 	char str_1[19] = "write/wrote/written";
+ 	
+ 	char str2[19] = "write;wrote;written";
+ 	char str_2[5] = "write";
+	//When
+	int real = s_cmp(str1, str_1);
+	int real1 = s_cmp(str2, str_2);
+	//Then
+	const int expected = 1;
+	const int expected1 = -1;
+	ASSERT_EQUAL(expected, real);
+	ASSERT_EQUAL(expected1, real1);
+}
