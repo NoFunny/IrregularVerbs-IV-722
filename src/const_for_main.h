@@ -1,4 +1,3 @@
-// MAIN PAGE
 const char *message_0_0 = "Welcome !";
 //const char *message_0_1 = "(Добро пожаловать !)";
 

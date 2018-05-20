@@ -17,7 +17,7 @@ int main(void)
 
 	dictionary_reading(tab, max_words_in_dictionary);
 
-	if ((n = hallway()) == 0) {
+	if ((n = for_main()) == 0) {
 		n = 1;
 	} else if (n == 1) {
 		n = 10;

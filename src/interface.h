@@ -5,7 +5,7 @@
 #include <ncurses.h>
 #include <stdbool.h>
 
-// Интерфейс до ввода строк.
-int hallway(void);
+int for_main(void);
+int for_enter_words(int amount);
 
 #endif

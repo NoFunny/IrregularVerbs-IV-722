@@ -88,7 +88,7 @@ void random_generator(int max_words_in_dictionary, int value[], int bucket[], in
 int enter_words(dictionary *tab, int value[], int amount)
 {
 	int i, j, result[100][3], count = 0, input, score = 0;
-	char buffer[100], delim[6] = "/|\\,.;", *part[3];
+	char buffer[100], numbers[10] = "0123456789", delim[6] = "/|\\,.;", *part[3];
 	
 	for (i = 0; i < amount; i++) {
 		int flag_du = flag;
@@ -96,8 +96,8 @@ int enter_words(dictionary *tab, int value[], int amount)
 		scanf("%s", buffer);
 		printf("\n");
 
-		if (str_tok(buffer, delim, part) != 3) {
-			while (str_tok(buffer, delim, part) != 3) {
+		if ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
+			while ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
 				printf("При вводе значений была обнаружена ошибка. Попробуйте снова.\n Enter: ");
 				scanf("%s", buffer);
 				printf("\n");
@@ -120,7 +120,6 @@ int enter_words(dictionary *tab, int value[], int amount)
 		} else {
 			result[i][2] = 1;
 		}
-
 		for (j = 0; j < 3; j++) {
 			if (result[i][j] == 0) {
 				count++;
@@ -134,14 +133,12 @@ int enter_words(dictionary *tab, int value[], int amount)
 				flag++;
 			}
 		}
-
 		if (i >= (amount-flag_du)) {
 			if (count == 3) {
 				invalid_input[amount-flag_du] = invalid_input[flag-1];
 				flag--;
 			}
 		}
-		printf("FLAG = [%d], flag_du = [%d], amount = [%d], i = [%d]\n", flag, flag_du, amount, i);
 	}
 	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", score, amount*3);
 	scanf("%d", &input);
@@ -149,8 +146,8 @@ int enter_words(dictionary *tab, int value[], int amount)
 	switch(input) {
 		case 1:
 		for (i = 0; i < amount; i++) {
-			if(count < 3) {
-				printf("Найдены ошибки в формах слова - %s\n", tab[value[i]].rus);
+			if (score != amount*3) {
+				printf("Найдены ошибки в формах слова - [%s]\n", tab[value[i]].rus);
 				if(result[i][0] == 1) {
 					printf("Вы ввели - %s\tПервая форма слова - %s\n", part[0], tab[value[i]].first_f);
 				}
