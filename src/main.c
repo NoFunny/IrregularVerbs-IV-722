@@ -7,8 +7,10 @@ int main(void)
 	FILE *input = fopen("dictionary.txt", "r");
 	int i, n, intput, game = 0;
 
+	initscr();
+
 	if(input == NULL) {
-		printf("Ошибка в считывании словаря\n");
+		printw("There was an error reading the dictionary.\n");
 		return 0;
 	}
 
@@ -38,8 +40,8 @@ int main(void)
 	enter_words(tab, value, n);
 
 	while( game == 0) {
-		printf("Вы хотите продолжить тест?\n1.Да\n2.Нет\n->");
-		scanf("%d", &intput);
+		printw("Do you want to continue the test?\n1.Yes\n2.No\n->");
+		scanw("%d", &intput);
 		switch(intput) {
 			case 1:
 				random_generator(max_words_in_dictionary, value, bucket, n+flag);
@@ -52,5 +54,6 @@ int main(void)
 
 	}
 	dictionary_clean(tab, value);
+	endwin();
 	return 0;
 }

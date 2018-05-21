@@ -3,7 +3,9 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <locale.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 typedef struct dictionary {
 	char *first_f;
