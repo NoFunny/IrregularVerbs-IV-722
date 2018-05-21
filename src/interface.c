@@ -1,7 +1,7 @@
-#include "const.h"
+#include "const_for_main.h"
 #include "interface.h"
 
-int hallway(void)
+int for_main(void)
 {
 	initscr();
 	bool enter = false; // Переход в curses-режим.
@@ -13,7 +13,7 @@ int hallway(void)
 	mvwprintw(stdscr, (lines/2)-0, (columns-strlen(message_0_4))/2, "%s", message_0_4);	// Вывод message_0_4.
 	getch(); // Ожидание нажатия какой-либо клавиши пользователем.
 
-	curs_set(0);
+	curs_set(0); // Выключение курсора.
 	keypad(stdscr, true); // Подключение функциональных клавишь.
 	while (enter == false) {
 		clear();
@@ -45,3 +45,18 @@ int hallway(void)
 	endwin(); // Выход из curses-режима. Обязательная команда.
 	return choice;
 }
+
+/*int for_enter_words(int amount)
+{
+	initscr();
+
+	raw(); // Получили полный контроль над клавиатурой.
+	keypad(stdscr, true); // Подключение функциональных клавишь.
+
+
+
+	refresh();
+
+	endwin();
+	return 0;
+}*/

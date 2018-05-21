@@ -49,7 +49,7 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	FILE *dictionary;
 	dictionary = fopen("dictionary.txt", "r");
 	if(dictionary == NULL) {
-		printf("Ошибка в считывании словаря");
+		printf("There was an error reading the dictionary.");
 		return NULL;
 	}
 	char *buffer = (char*)malloc(50*sizeof(char));
@@ -69,67 +69,48 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	return tab;
 }
 
-void random_generator(int max_words_in_dictionary, int value[], int amount)
+void random_generator(int max_words_in_dictionary, int value[], int bucket[], int amount)
 {
-	int i;
+	int i, x;
 
 	srand(time(NULL));
-	for (i = 0; i < amount; i++) {
-		value[i] = rand() % max_words_in_dictionary;
+	for (i = 0; i < amount; i++, flag_0++) {
+		x = rand() % (max_words_in_dictionary-flag_0);
+		value[i] = bucket[x];
+		bucket[x] = bucket[max_words_in_dictionary-flag_0];
 		if (i >= amount-flag) {
 			value[i] = invalid_input[i-(amount-flag)];
+			flag_0--;
 		}
 	}
-}
-
-void random_check(int max_words_in_dictionary, int value[], int amount)
-{
-	int i, j;
-
-	// Проверка значений на совпадения.
-	for (i = 0; i < amount; i++) {
-		for (j = 0; j < amount; j++) {
-			if ((value[i] == value[j]) && (i != j)) {
-				do {
-					value[i] = rand() % max_words_in_dictionary;
-				} while (value[i] == value[j]);
-				return random_check(max_words_in_dictionary, value, amount);
-			}
-		}
-	}
-
-	// Проверка значений на посещенные элементы.
-	for (i = 0; i < amount; i++) {
-		for (j = 0; j < visit_flag; j++) {
-			if (value[i] == array_of_visit[j]) {
-				do {
-					value[i] = rand() % max_words_in_dictionary;
-				} while (value[i] == array_of_visit[j]);
-				return random_check(max_words_in_dictionary, value, amount);
-			}
-		}
-	}
-
 }
 
 int enter_words(dictionary *tab, int value[], int amount)
 {
-	int i, j, result[100][3], count = 0, input;
-	char buffer[100], delim[6] = "/|\\,.;", *part[3];
-
+	int i, j, result[100][3], count = 0, input, score = 0;
+	char buffer[100], numbers[10] = "0123456789", delim[7] = "/|\\,. ;", *part[3];
+	
 	for (i = 0; i < amount; i++) {
-		printf("Введите 3 формы слова [%s] через любой из разделителей - [%s].\nЕсли вы не знаете слово, просто введите '-'.\n Enter: ", tab[value[i]].rus, delim);
-		scanf("%s", buffer);
-		printf("\n");
+		int flag_du = flag;
 
-		if (str_tok(buffer, delim, part) != 3) {
-			while (str_tok(buffer, delim, part) != 3) {
-				printf("При вводе значений была обнаружена ошибка. Попробуйте снова.\n Enter: ");
-				scanf("%s", buffer);
-				printf("\n");
+		initscr(); // IN curses-mode.
+		clear(); // Clean window.
+
+		printw("Enter 3 word forms [%s] through any of the separator - [%s].\nIf you do not know the word, just type '-'.\n Enter: ", tab[value[i]].rus, delim);
+		refresh(); // Input buffer.
+		getstr(buffer); // Input str.
+		//scanw("%s", buffer);
+		printw("\n");
+
+		if ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
+			while ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
+				printw("An error was encountered while entering values. Try it again.\n Enter: ");
+				getstr(buffer); // Input str.
+				printw("\n");
 			}
 		}
 		
+		count = 0;
 		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
 			result[i][0] = 0;
 		} else {
@@ -145,41 +126,48 @@ int enter_words(dictionary *tab, int value[], int amount)
 		} else {
 			result[i][2] = 1;
 		}
-
 		for (j = 0; j < 3; j++) {
 			if (result[i][j] == 0) {
 				count++;
+				score++;
 			}
 		}
 
-		if (count != 3) {
-			invalid_input[flag] = value[i];
-			flag++;
-		} else {
-			array_of_visit[visit_flag] = value[i];
+		if (i < (amount-flag_du)) {
+			if (count != 3) {
+				invalid_input[flag_du] = value[i];
+				flag++;
+			}
+		}
+		if (i >= (amount-flag_du)) {
+			if (count == 3) {
+				invalid_input[amount-flag_du] = invalid_input[flag-1];
+				flag--;
+			}
 		}
 	}
-	printf("Ваш результат: %d правильных из %d .\nВы хотите увидеть список ошибок?\n1.Да\n2.Нет\n->", count, amount*3);
-	scanf("%d", &input);
+	printw("Yoy result: %d correct of %d .\nDo you want to see a list of errors?\n1.Yes\n2.No\n->", score, amount*3);
+	scanw("%d", &input);
 
 	switch(input) {
 		case 1:
+		clear(); // Clean win.
 		for (i = 0; i < amount; i++) {
-			if(count < 3) {
-				printf("Найдены ошибки в формах слова - %s\n", tab[value[i]].rus);
+			if (score != amount*3) {
+				printw("Найдены ошибки в формах слова - [%s]\n", tab[value[i]].rus);
 				if(result[i][0] == 1) {
-					printf("Вы ввели - %s\tПервая форма слова - %s\n", part[0], tab[value[i]].first_f);
+					printw("You enter - %s\tThe first form of a word - %s\n", part[0], tab[value[i]].first_f);
 				}
 				if(result[i][1] == 1) {
-					printf("Вы ввели - %s\tВторая форма слова - %s\n", part[1], tab[value[i]].second_f);
+					printw("You enter - %s\tThe second form of a word - %s\n", part[1], tab[value[i]].second_f);
 				}
 				if(result[i][2] == 1) {
-					printf("Вы ввели - %s\tТретья форма слова - %s\n", part[2], tab[value[i]].third_f);
+					printw("You enter - %s\tThe third form of a word - %s\n", part[2], tab[value[i]].third_f);
 				}
 			} else {
-				printf("У вас нет ошибок!\n");
+				printw("You do not have errors!\n");
 			}
-			printf("\n");
+			printw("\n");
 		}
 		break;
 		case 2:
@@ -187,6 +175,7 @@ int enter_words(dictionary *tab, int value[], int amount)
 		default:
 			return 0;
 	}
+	endwin(); // EXIT curses-mode.
 	return 0;
 }				
 
