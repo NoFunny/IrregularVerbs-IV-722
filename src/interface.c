@@ -1,5 +1,5 @@
-#include "const_for_main.h"
 #include "interface.h"
+#include "const_for_main.h"
 
 int for_main(void)
 {
@@ -45,18 +45,3 @@ int for_main(void)
 	endwin(); // Выход из curses-режима. Обязательная команда.
 	return choice;
 }
-
-/*int for_enter_words(int amount)
-{
-	initscr();
-
-	raw(); // Получили полный контроль над клавиатурой.
-	keypad(stdscr, true); // Подключение функциональных клавишь.
-
-
-
-	refresh();
-
-	endwin();
-	return 0;
-}*/
