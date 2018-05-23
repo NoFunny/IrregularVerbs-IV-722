@@ -1,6 +1,5 @@
 #include "interface.h"
 #include "dictionary.h"
-#include "in_out_words.h"
 
 int main(void)
 {
@@ -27,7 +26,7 @@ int main(void)
 	} else if (n == 2) {
 		n = 15;
 	} else if (n == 3) {
-		n = 25; 
+		n = 25;
 	}
 
 	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
