@@ -3,9 +3,9 @@
 
 int main(void)
 {
-	flag = 0, flag_0 = 0;
+	invalid_flag = 0, flag_0 = 0;
 	FILE *input = fopen("dictionary.txt", "r");
-	int i, n, intput, game = 0;
+	int n, intput, game = 0;
 
 	initscr();
 
@@ -31,21 +31,21 @@ int main(void)
 
 	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
 	int *bucket = (int*)malloc(sizeof(int)*max_words_in_dictionary);
-	for (i = 0; i < max_words_in_dictionary; i++) {
+	for (int i = 0; i < max_words_in_dictionary; i++) {
 		bucket[i] = i+1;
 	}
 
 	random_generator(max_words_in_dictionary, value, bucket, n);
 
-	enter_words(tab, value, n);
+	scan_and_out(tab, value, n);
 
 	while( game == 0) {
 		printw("Do you want to continue the test?\n1.Yes\n2.No\n->");
 		scanw("%d", &intput);
 		switch(intput) {
 			case 1:
-				random_generator(max_words_in_dictionary, value, bucket, n+flag);
-				enter_words(tab, value, n+flag);
+				random_generator(max_words_in_dictionary, value, bucket, n+invalid_flag);
+				scan_and_out(tab, value, n+invalid_flag);
 				break;
 			case 2:
 				game = 1;

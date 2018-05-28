@@ -6,6 +6,5 @@
 #include <stdbool.h>
 
 int for_main(void);
-int for_enter_words(int amount);
 
 #endif
