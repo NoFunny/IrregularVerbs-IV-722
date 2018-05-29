@@ -11,12 +11,13 @@ int count_string(FILE * input)
 		}
 	}
 	fclose(input);
-	return lines_count+1;
-
+	return lines_count + 1;
+	printf("%d\n", lines_count);
 }
 
 dictionary *dictionary_init(int max_words_in_dictionary)
-{	if(max_words_in_dictionary > 0) {
+{	
+	if(max_words_in_dictionary > 0) {
 		dictionary *tab;
 		tab = (dictionary*)malloc(max_words_in_dictionary*sizeof(dictionary));
 		for (int i = 0; i < max_words_in_dictionary; i++) {

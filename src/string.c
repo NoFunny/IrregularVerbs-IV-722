@@ -10,52 +10,52 @@ int slen(char *str)
 	return count;
 }
 
-void stok_free(char** arr)
-{
-    int i = 0;
-    while(arr[i] != NULL){
-        free(arr[i++]);
-    }
-    free(arr);
-}
+// void stok_free(char** arr)
+// {
+//     int i = 0;
+//     while(arr[i] != NULL){
+//         free(arr[i++]);
+//     }
+//     free(arr);
+// }
 
-char** stok(char* str, char delim)
-{
-    int leng = slen(str);
-    int i, j, k;
-    int arr_count = 0;
-    j = k = 0;
+// char** stok(char* str, char delim)
+// {
+//     int leng = slen(str);
+//     int i, j, k;
+//     int arr_count = 0;
+//     j = k = 0;
     
-    for (i = 0; i < leng; i++){
-        if (str[i] == delim){
-            str[i] = '\0';
-            arr_count++;
-        }
-    }
-    arr_count++;
+//     for (i = 0; i < leng; i++){
+//         if (str[i] == delim){
+//             str[i] = '\0';
+//             arr_count++;
+//         }
+//     }
+//     arr_count++;
 
-    char **res = (char**)malloc(sizeof(char*) * (arr_count + 1));
-    if (res == NULL) return 0;
-    res[arr_count] = NULL;
+//     char **res = (char**)malloc(sizeof(char*) * (arr_count + 1));
+//     if (res == NULL) return 0;
+//     res[arr_count] = NULL;
 
-    for (i = 0; i < arr_count; i++){
+//     for (i = 0; i < arr_count; i++){
 
-        res[i] = (char*)malloc(sizeof(char) * (leng + 1));
+//         res[i] = (char*)malloc(sizeof(char) * (leng + 1));
         
-        while(str[j] != '\0'){
-            res[i][k] = str[j];
-            k++;
-            j++;
-        }
-        j++;
+//         while(str[j] != '\0'){
+//             res[i][k] = str[j];
+//             k++;
+//             j++;
+//         }
+//         j++;
 
-        res[i][k] = '\0';
-        res[i] = realloc(res[i], k);
-        k = 0;
-    }
+//         res[i][k] = '\0';
+//         res[i] = realloc(res[i], k);
+//         k = 0;
+//     }
 
-    return res;
-}
+//     return res;
+// }
 
 
 int s_tok(char *str, char delim, char *ptr[])
@@ -82,9 +82,16 @@ int schr(char *str, char ch)
 	return index;
 }
 
-void scopy(char *s1, char *s2)
+int scopy(char *s1, char *s2)
 {
+	int i = 0;
 	while((*s2++ = *s1++) != '\0');
+	if(slen(s2) == (slen(s1) + slen((s2)))) {
+		i = 1;
+		return i; 
+	}else{
+		return i;
+	}	
 }
 
 int s_cmp(char *str_1, char *str_2)
