@@ -1,6 +1,6 @@
 flags = -Wall -Werror -std=c11
 
-all: bin build bin/verbs
+all: bin build bin/verbs bin/test
 
 bin/verbs: build/main.o build/dictionary.o build/string.o build/interface.o
 	gcc $(flags) build/main.o build/dictionary.o build/string.o build/interface.o -o bin/verbs -lncursesw
@@ -16,6 +16,16 @@ build/dictionary.o: src/dictionary.c
 
 build/interface.o: src/interface.c
 	gcc $(flags) -c src/interface.c -o build/interface.o
+
+bin/test: build/ftest.o build/test.o build/dictionary.o build/string.o
+	gcc $(flags) build/ftest.o build/test.o build/dictionary.o build/string.o -o bin/test 
+
+build/ftest.o: test/ftest.c
+	gcc $(flags) -c test/ftest.c -o build/ftest.o -Ithirdparty	
+
+build/test.o: test/test.c
+	gcc $(flags) -c test/test.c -o build/test.o -Ithirdparty -Isrc
+	
 
 bin:
 	mkdir -p bin

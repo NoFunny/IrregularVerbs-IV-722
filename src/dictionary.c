@@ -11,37 +11,41 @@ int count_string(FILE * input)
 		}
 	}
 	fclose(input);
-	return lines_count+1;
-
+	return lines_count + 1;
+	printf("%d\n", lines_count);
 }
 
 dictionary *dictionary_init(int max_words_in_dictionary)
-{
-	dictionary *tab;
-	tab = (dictionary*)malloc(max_words_in_dictionary*sizeof(dictionary));
-	for (int i = 0; i < max_words_in_dictionary; i++) {
-		tab[i].first_f = (char*)malloc(50*sizeof(char));
-		tab[i].second_f = (char*)malloc(50*sizeof(char));
-		tab[i].third_f = (char*)malloc(50*sizeof(char));
-		tab[i].rus = (char*)malloc(50*sizeof(char));
-		for (int j = 0; j < 50; j++) {
-			tab[i].first_f[j] = 0;
+{	
+	if(max_words_in_dictionary > 0) {
+		dictionary *tab;
+		tab = (dictionary*)malloc(max_words_in_dictionary*sizeof(dictionary));
+		for (int i = 0; i < max_words_in_dictionary; i++) {
+			tab[i].first_f = (char*)malloc(50*sizeof(char));
+			tab[i].second_f = (char*)malloc(50*sizeof(char));
+			tab[i].third_f = (char*)malloc(50*sizeof(char));
+			tab[i].rus = (char*)malloc(50*sizeof(char));
+			for (int j = 0; j < 50; j++) {
+				tab[i].first_f[j] = 0;
+			}
+			for (int j = 0; j < 50; j++) {
+				tab[i].second_f[j] = 0;
+			}
+			for (int j = 0; j < 50; j++) {
+				tab[i].third_f[j] = 0;
+			}
+			for (int j = 0; j < 50; j++) {
+				tab[i].rus[j] = 0;
+			}
 		}
-		for (int j = 0; j < 50; j++) {
-			tab[i].second_f[j] = 0;
+		if(tab == NULL) {
+			return NULL;
 		}
-		for (int j = 0; j < 50; j++) {
-			tab[i].third_f[j] = 0;
-		}
-		for (int j = 0; j < 50; j++) {
-			tab[i].rus[j] = 0;
-		}
-	}
-	if(tab == NULL) {
+		return tab;
+	} else {
 		return NULL;
 	}
-	return tab;
-}
+}		
 
 dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 {
