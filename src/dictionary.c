@@ -12,7 +12,6 @@ int count_string(FILE * input)
 	}
 	fclose(input);
 	return lines_count + 1;
-	printf("%d\n", lines_count);
 }
 
 dictionary *dictionary_init(int max_words_in_dictionary)
