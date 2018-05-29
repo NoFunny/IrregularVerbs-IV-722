@@ -48,11 +48,13 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	FILE *dictionary;
 	dictionary = fopen("dictionary.txt", "r");
 	if(dictionary == NULL) {
-		printf("There was an error reading the dictionary.");
+		printf("Ошибка в считывании словаря\n");
 		return NULL;
 	}
 	char *buffer = (char*)malloc(50*sizeof(char));
+	//char *russian = (char*)malloc(50*sizeof(char));
 	char  *p[10];
+	//size_t size = 50;
 
 	for (int i = 0; i < max_words_in_dictionary; i++) {
 		fscanf(dictionary, "%s", buffer);
@@ -96,16 +98,15 @@ int scan_and_out(dictionary *tab, int value[], int amount)
 		initscr(); // IN curses-mode.
 		clear(); // Clean window.
 
-		printw("%s%s%s", "Enter 3 word forms [%s] through any of the separator - [%s].\n",
-			"If you do not know the word, just type '-'.\n",
-			 "Enter: ", tab[value[i]].rus, delim);
+
+		printw("Введите 3 формы слова [%s]\nЧерез любой из разделителей [%s]\nЕсли не знаете слово ставьте [-]\n->", tab[value[i]].rus, delim);
 		refresh(); // Input buffer.
 		getstr(buffer); // Input str.
 		printw("\n");
 
 		if ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
 			while ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
-				printw("An error was encountered while entering values. Try it again.\n Enter: ");
+				printw("Ошибка при вводе значений. Попытайся снова.\n Enter: ");
 				getstr(buffer); // Input str.
 				printw("\n");
 			}
@@ -147,7 +148,7 @@ int scan_and_out(dictionary *tab, int value[], int amount)
 			}
 		}
 	}
-	printw("You result: %d correct of %d .\nDo you want to see a list of errors?\n1.Yes\n2.No\n->", score, amount*3);
+	printw("Ваш результат: %d правильных из %d .\nВы хотите увидеть отчет об ошибках?\n1.Да\n2.Нет\n->", score, amount*3);
 	scanw("%d", &input);
 
 	switch(input) {
@@ -155,18 +156,18 @@ int scan_and_out(dictionary *tab, int value[], int amount)
 		clear(); // Clean win.
 		for (int i = 0; i < amount; i++) {
 			if (score != amount*3) {
-				printw("Found errors in word forms - [%s]\n", tab[value[i]].rus);
+				printw("Были найдены ошибки в формах слова - [%s]\n", tab[value[i]].rus);
 				if(result[i][0] == 1) {
-					printw("You enter - %s\tThe first form of a word - %s\n", part[0], tab[value[i]].first_f);
+					printw("Вы ввели - %s\tПервая форма слова - %s\n", part[0], tab[value[i]].first_f);
 				}
 				if(result[i][1] == 1) {
-					printw("You enter - %s\tThe second form of a word - %s\n", part[1], tab[value[i]].second_f);
+					printw("Вы ввели - %s\tВторая форма слова - %s\n", part[1], tab[value[i]].second_f);
 				}
 				if(result[i][2] == 1) {
-					printw("You enter - %s\tThe third form of a word - %s\n", part[2], tab[value[i]].third_f);
+					printw("Вы ввели - %s\tТретья форма слова - %s\n", part[2], tab[value[i]].third_f);
 				}
 			} else {
-				printw("You do not have errors!\n");
+				printw("Вы не сделали ошибок!\n");
 			}
 			printw("\n");
 		}

@@ -3,7 +3,7 @@ flags = -Wall -Werror -std=c11
 all: bin build bin/verbs
 
 bin/verbs: build/main.o build/dictionary.o build/string.o build/interface.o
-	gcc $(flags) build/main.o build/dictionary.o build/string.o build/interface.o -o bin/verbs -lncurses
+	gcc $(flags) build/main.o build/dictionary.o build/string.o build/interface.o -o bin/verbs -lncursesw
 
 build/main.o: src/main.c
 	gcc $(flags) -c src/main.c -o build/main.o

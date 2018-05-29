@@ -1,8 +1,11 @@
 #include "interface.h"
 #include "dictionary.h"
+#include <locale.h>
 
 int main(void)
 {
+	setlocale( 0, "" );
+	//setlocale(LC_CTYPE, "");
 	invalid_flag = 0, flag_0 = 0;
 	FILE *input = fopen("dictionary.txt", "r");
 	int n, intput, game = 0;
@@ -10,7 +13,7 @@ int main(void)
 	initscr();
 
 	if(input == NULL) {
-		printw("There was an error reading the dictionary.\n");
+		printw("Ошибка в считывании словаря\n");
 		return 0;
 	}
 
@@ -40,7 +43,7 @@ int main(void)
 	scan_and_out(tab, value, n);
 
 	while( game == 0) {
-		printw("Do you want to continue the test?\n1.Yes\n2.No\n->");
+		printw("Вы хотите продолжить тест?\n1.Да\n2.Нет\n->");
 		scanw("%d", &intput);
 		switch(intput) {
 			case 1:
@@ -55,5 +58,6 @@ int main(void)
 	}
 	dictionary_clean(tab, value);
 	endwin();
+
 	return 0;
 }
