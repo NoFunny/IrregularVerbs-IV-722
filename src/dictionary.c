@@ -73,8 +73,9 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 	return tab;
 }
 
-void random_generator(int max_words_in_dictionary, int value[], int bucket[], int amount)
+int random_generator(int max_words_in_dictionary, int value[], int bucket[], int amount)
 {
+	if(max_words_in_dictionary >= amount) { 
 	srand(time(NULL));
 	for (int i = 0; i < amount; i++, flag_0++) {
 		int x = rand() % (max_words_in_dictionary-flag_0);
@@ -84,6 +85,10 @@ void random_generator(int max_words_in_dictionary, int value[], int bucket[], in
 			value[i] = invalid_input[i-(amount-invalid_flag)];
 			flag_0--;
 		}
+	}
+	return flag_0;
+	} else {
+		return 0;
 	}
 }
 

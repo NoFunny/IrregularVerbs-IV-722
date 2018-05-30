@@ -165,7 +165,7 @@ CTEST(dictionary, INIT) //Проверка инициализации слова
 	ASSERT_NOT_NULL(real1);
 }
 
-CTEST(dictionary, READ) //Проверка чтения словаря
+CTEST(dictionary, READING) //Проверка чтения словаря
 {	
 	// //Given
 	int max_words_in_dictionary = 100;
@@ -182,19 +182,28 @@ CTEST(dictionary, READ) //Проверка чтения словаря
 	ASSERT_NULL(real1);
 }
 
-// CTEST(dictionary, DICT_CLEAN) //Проверка чтения словаря
-// {	
-// 	// //Given
-// 	int max_words_in_dictionary = 100;
-// 	int max_words_in_dictionary_1 = 0;
-// 	dictionary *tab = dictionary_init(max_words_in_dictionary);
-// 	dictionary *tabl = dictionary_init(max_words_in_dictionary_1);
+CTEST(dictionary, RANDOM_GEN) //Проверка чтения словаря
+{	
+	// //Given
+	int n = 5;
+	int max_words_in_dictionary = 100;
+	int max_words_in_dictionary_1 = 0;
+	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
+	int *bucket = (int*)malloc(sizeof(int)*max_words_in_dictionary);
 
-// 	//When
-// 	dictionary *real = dictionary_clean(tab, max_words_in_dictionary);
-// 	dictionary *real1 = dictionary_clean(tabl,max_words_in_dictionary_1);
+	int *value_1 = (int*)malloc(sizeof(int)*max_words_in_dictionary_1);
+	int *bucket_1 = (int*)malloc(sizeof(int)*max_words_in_dictionary_1);
+
+	//When
+	int real = random_generator(max_words_in_dictionary, value, bucket, n);	
+
+	int real1 = random_generator(max_words_in_dictionary_1, value_1, bucket_1, n);	
 	
-// 	//Then
-// 	ASSERT_NOT_NULL(real);
-// 	ASSERT_NULL(real1);
-// }
+	//Then
+	const int expected = 5;
+	const int expected_1 = 0;
+	ASSERT_EQUAL(expected, real);
+	ASSERT_EQUAL(expected_1, real1);
+	// ASSERT_NULL(value);
+}
+
