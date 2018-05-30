@@ -1,6 +1,7 @@
 #include "interface.h"
 #include "dictionary.h"
 #include <locale.h>
+#include <ncurses.h>
 
 int main(void)
 {

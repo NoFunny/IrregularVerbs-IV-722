@@ -25,7 +25,7 @@ CTEST(string, SLEN) //Длина строки
 CTEST(string, S_TOK) //Разбиение строки
 {
 	//Given
-	char str[19] = "write;wrote;written";
+	char str[] = "write;wrote;written";
  	char delim = ';';
  	char delim_1 = '.';
  	char *ptr[3];
@@ -48,7 +48,7 @@ CTEST(string, S_TOK) //Разбиение строки
 CTEST(string, SCHR) //Поиск символа в строке
 {
 	//Given
-	char str[19] = "write;wrote;written";
+	char str[] = "write;wrote;written";
  	char ch = 'o';
  	char ch1 = 'c';
 	
@@ -67,7 +67,7 @@ CTEST(string, SCOPY) //Копирование строки
 {
 	//Given
 	char str[19] = "write;wrote;written";
-	char str_1[1] = "\0";
+	char str_1[0] = "";
 	
 	//When
 	int real = scopy(str, str_1);
@@ -81,7 +81,7 @@ CTEST(string, S_CMP)  //Сравнение строк
 {
 	//Given
 	char str1[19] = "write;wrote;written";
- 	char str_1[19] = "write/wrote/written";
+ 	char str_1[19] = "write;wrote;written";
  	
  	char str2[19] = "write;wrote;written";
  	char str_2[5] = "write";
@@ -119,8 +119,8 @@ CTEST(string, STR_CHR) //Поиск подстроки в строке
 CTEST(string, STR_TOK) //Разбиение строки
 {
 	//Given
-	char str[19] = "write;wrote;written";
-	char delim[6] = "/|\\,.;", *ptr[3];
+	char str[] = "write;wrote;written";
+	char delim[] = "/|\\,.;", *ptr[3];
 
 	//When
 	int real = str_tok(str, delim, ptr);
@@ -182,3 +182,19 @@ CTEST(dictionary, READ) //Проверка чтения словаря
 	ASSERT_NULL(real1);
 }
 
+// CTEST(dictionary, DICT_CLEAN) //Проверка чтения словаря
+// {	
+// 	// //Given
+// 	int max_words_in_dictionary = 100;
+// 	int max_words_in_dictionary_1 = 0;
+// 	dictionary *tab = dictionary_init(max_words_in_dictionary);
+// 	dictionary *tabl = dictionary_init(max_words_in_dictionary_1);
+
+// 	//When
+// 	dictionary *real = dictionary_clean(tab, max_words_in_dictionary);
+// 	dictionary *real1 = dictionary_clean(tabl,max_words_in_dictionary_1);
+	
+// 	//Then
+// 	ASSERT_NOT_NULL(real);
+// 	ASSERT_NULL(real1);
+// }
