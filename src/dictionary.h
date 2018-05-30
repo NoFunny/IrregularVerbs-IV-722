@@ -15,6 +15,13 @@ typedef struct dictionary {
 	char *rus;
 } dictionary;
 
+typedef struct data {
+	char *in_first_f;
+	char *in_second_f;
+	char *in_third_f;
+	unsigned int hitting[3];
+} data;
+
 unsigned int invalid_flag, flag_0;
 int invalid_input[100];
 
@@ -27,7 +34,7 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary);
 // Получение рандомных слов в массив value[].
 void random_generator(int max_words_in_dictionary, int value[], int bucket[], int amount);
 // Ввод слов.
-int scan_and_out(dictionary *tab, int value[], int amount);
+int scan_and_out(dictionary *tab, data *data, int value[], int amount);
 // Очистка всех элементов.
 void dictionary_clean(dictionary *tab, int value[]);
 

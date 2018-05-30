@@ -18,4 +18,4 @@ const char menu[4][20] = {
 
 
 // ENTER MENU
-const char *message_1_0 = "Выберите сложность.";
+const char *message_0_5 = "Выберите сложность.";

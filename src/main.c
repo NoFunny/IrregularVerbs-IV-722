@@ -1,16 +1,13 @@
 #include "interface.h"
 #include "dictionary.h"
-#include <locale.h>
-#include <ncurses.h>
 
 int main(void)
 {
-	setlocale( 0, "" );
-	//setlocale(LC_CTYPE, "");
 	invalid_flag = 0, flag_0 = 0;
 	FILE *input = fopen("dictionary.txt", "r");
 	int n, intput, game = 0;
 
+	setlocale( 0, "" );
 	initscr();
 
 	if(input == NULL) {
@@ -20,6 +17,7 @@ int main(void)
 
 	int max_words_in_dictionary = count_string(input);
 	dictionary *tab = dictionary_init(max_words_in_dictionary);
+	data *in_data = (data*)malloc(sizeof(data)*max_words_in_dictionary);
 
 	dictionary_reading(tab, max_words_in_dictionary);
 
@@ -41,7 +39,7 @@ int main(void)
 
 	random_generator(max_words_in_dictionary, value, bucket, n);
 
-	scan_and_out(tab, value, n);
+	scan_and_out(tab, in_data, value, n);
 
 	while( game == 0) {
 		printw("Вы хотите продолжить тест?\n1.Да\n2.Нет\n->");
@@ -49,7 +47,7 @@ int main(void)
 		switch(intput) {
 			case 1:
 				random_generator(max_words_in_dictionary, value, bucket, n+invalid_flag);
-				scan_and_out(tab, value, n+invalid_flag);
+				scan_and_out(tab, in_data, value, n+invalid_flag);
 				break;
 			case 2:
 				game = 1;

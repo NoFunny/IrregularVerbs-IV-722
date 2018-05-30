@@ -55,9 +55,7 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 		return NULL;
 	}
 	char *buffer = (char*)malloc(50*sizeof(char));
-	//char *russian = (char*)malloc(50*sizeof(char));
 	char  *p[10];
-	//size_t size = 50;
 
 	for (int i = 0; i < max_words_in_dictionary; i++) {
 		fscanf(dictionary, "%s", buffer);
@@ -87,13 +85,11 @@ void random_generator(int max_words_in_dictionary, int value[], int bucket[], in
 	}
 }
 
-int scan_and_out(dictionary *tab, int value[], int amount)
+int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 {
-	char buffer[100], *part[3], delim[7] = "/\\|,.; ", numbers[10] = "0123456789";
+	char buffer[100], *session_tok[3], delim[7] = "/\\|,.; ", numbers[10] = "0123456789";
 	
-	int result[100][3], result_count, score = 0;
-
-	int input = 0;
+	int hitting_of_session, score = 0;
 
 	for (int i = 0; i < amount; i++) {
 		int flag_du = invalid_flag;
@@ -101,78 +97,82 @@ int scan_and_out(dictionary *tab, int value[], int amount)
 		initscr(); // IN curses-mode.
 		clear(); // Clean window.
 
-
 		printw("Введите 3 формы слова [%s]\nЧерез любой из разделителей [%s]\nЕсли не знаете слово ставьте [-]\n->", tab[value[i]].rus, delim);
 		refresh(); // Input buffer.
 		getstr(buffer); // Input str.
 		printw("\n");
 
-		if ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
-			while ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
+		if ((str_tok(buffer, delim, session_tok) != 3) || (str_chr(buffer, numbers) != -1)) {
+			while ((str_tok(buffer, delim, session_tok) != 3) || (str_chr(buffer, numbers) != -1)) {
 				printw("Ошибка при вводе значений. Попытайся снова.\n Enter: ");
 				getstr(buffer); // Input str.
 				printw("\n");
 			}
 		}
-		
-		result_count = 0;
-		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
-			result[i][0] = 0;
+
+		hitting_of_session = 0;
+		if ((s_cmp(tab[value[i]].first_f, session_tok[0]) == 0)) {
+			data[i].hitting[0] = 0;
 		} else {
-			result[i][0] = 1;
+			data[i].hitting[0] = 1;
+			data[i].in_first_f = session_tok[0];
 		}
-		if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
-			result[i][1] = 0;
+		if ((s_cmp(tab[value[i]].second_f, session_tok[1]) == 0)) {
+			data[i].hitting[1] = 0;
 		} else {
-			result[i][1] = 1;
+			data[i].hitting[1] = 1;
+			data[i].in_second_f = session_tok[1];
 		}
-		if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
-			result[i][2] = 0;
+		if ((s_cmp(tab[value[i]].third_f, session_tok[2]) == 0)) {
+			data[i].hitting[2] = 0;
 		} else {
-			result[i][2] = 1;
+			data[i].hitting[2] = 1;
+			data[i].in_third_f = session_tok[2];
 		}
 		for (int j = 0; j < 3; j++) {
-			if (result[i][j] == 0) {
-				result_count++;
+			if (data[i].hitting[j] == 0) {
+				hitting_of_session++;
 				score++;
 			}
 		}
 
 		if (i < (amount-flag_du)) {
-			if (result_count != 3) {
+			if (hitting_of_session != 3) {
 				invalid_input[flag_du] = value[i];
 				invalid_flag++;
 			}
 		}
 		if (i >= (amount-flag_du)) {
-			if (result_count == 3) {
+			if (hitting_of_session == 3) {
 				invalid_input[amount-flag_du] = invalid_input[invalid_flag-1];
 				invalid_flag--;
 			}
 		}
 	}
 	printw("Ваш результат: %d правильных из %d .\nВы хотите увидеть отчет об ошибках?\n1.Да\n2.Нет\n->", score, amount*3);
+	int input;
 	scanw("%d", &input);
 
 	switch(input) {
 		case 1:
+
 		clear(); // Clean win.
-		for (int i = 0; i < amount; i++) {
-			if (score != amount*3) {
+		if (score == (amount*3)) {
+			printw("Вы не сделали ошибок!\n");	
+		} else {
+			for (int i = 0; i < amount; i++) {
 				printw("Были найдены ошибки в формах слова - [%s]\n", tab[value[i]].rus);
-				if(result[i][0] == 1) {
-					printw("Вы ввели - %s\tПервая форма слова - %s\n", part[0], tab[value[i]].first_f);
+				if(data[i].hitting[0] == 1) {
+					printw("Вы ввели - %s\tПервая форма слова - %s\n", data[i].in_first_f, tab[value[i]].first_f);
 				}
-				if(result[i][1] == 1) {
-					printw("Вы ввели - %s\tВторая форма слова - %s\n", part[1], tab[value[i]].second_f);
+				if(data[i].hitting[1] == 1) {
+					printw("Вы ввели - %s\tВторая форма слова - %s\n", data[i].in_second_f, tab[value[i]].second_f);
 				}
-				if(result[i][2] == 1) {
-					printw("Вы ввели - %s\tТретья форма слова - %s\n", part[2], tab[value[i]].third_f);
+				if(data[i].hitting[2] == 1) {
+					printw("Вы ввели - %s\tТретья форма слова - %s\n", data[i].in_third_f, tab[value[i]].third_f);
 				}
-			} else {
-				printw("Вы не сделали ошибок!\n");
+			printf("\n");
 			}
-			printw("\n");
 		}
 		break;
 		case 2:

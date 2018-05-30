@@ -18,7 +18,7 @@ int for_main(void)
 	while (enter == false) {
 		clear();
 		for (i = 0; i < 4; i++) {
-			mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_1_0))/2, "%s", message_1_0);
+			mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_0_5))/2, "%s", message_0_5);
 			if(i == choice) {
 				mvwaddch(stdscr, (lines/2)+i, (columns-strlen(menu[i]))/2-1, '>');
 			} else {
