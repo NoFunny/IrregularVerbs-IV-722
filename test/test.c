@@ -68,7 +68,6 @@ CTEST(string, SCOPY) //Копирование строки
 	scopy(str_1,str);
 
 	//Then
-	// const int expected = 1;
 	ASSERT_STR(str, str_1);
 }
 
@@ -199,6 +198,24 @@ CTEST(dictionary, RANDOM_GEN) //Проверка генератора рандо
 	const int expected_1 = 0;
 	ASSERT_EQUAL(expected, real);
 	ASSERT_EQUAL(expected_1, real1);
+}
+
+CTEST(dictionary, SCAN_AND_OUT) //Проверка ввода слов
+{	
+	//Given
+	setlocale( 0, "" );
+	int n = 1;
+	int max_words_in_dictionary = 100;
+	dictionary *tab = dictionary_init(max_words_in_dictionary);
+	data *in_data = (data*)malloc(sizeof(data)*max_words_in_dictionary);
+	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
+
+	//When
+	int real = scan_and_out(tab, in_data, value, n);		
+
+	//Then
+	const int expected = 0;
+	ASSERT_EQUAL(expected, real);
 }
 
 CTEST(dictionary, D_CLEAN) //Проверка очищения массива и структуры данных
