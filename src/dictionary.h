@@ -6,6 +6,7 @@
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <ncurses.h>
 
 typedef struct dictionary {

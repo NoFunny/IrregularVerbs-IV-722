@@ -1,5 +1,6 @@
 #include "string.h"
 #include "dictionary.h"
+#include "const_for_scan_and_out.h"
 
 int count_string(FILE * input)
 {
@@ -89,22 +90,35 @@ int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 {
 	char buffer[100], *session_tok[3], delim[7] = "/\\|,.; ", numbers[10] = "0123456789";
 	
-	int hitting_of_session, score = 0;
+	int hitting_of_session, score = 0, lines, columns;
 
 	for (int i = 0; i < amount; i++) {
 		int flag_du = invalid_flag;
 
 		initscr(); // IN curses-mode.
+		getmaxyx(stdscr, lines, columns);
 		clear(); // Clean window.
 
-		printw("Введите 3 формы слова [%s]\nЧерез любой из разделителей [%s]\nЕсли не знаете слово ставьте [-]\n->", tab[value[i]].rus, delim);
+		mvwprintw(stdscr, (lines/2)-12, (columns - (strlen(message_1_0)+strlen(tab[value[i]].rus))/2)/2, "Введите 3 формы слова [%s]", tab[value[i]].rus);
+		mvwprintw(stdscr, (lines/2)-10, (columns - (strlen(message_1_1)+sizeof(delim))/2)/2, "Через любой из разделителей [%s]", delim);
+		mvwprintw(stdscr, (lines/2)-9, (columns - strlen(message_1_2)/2)/2, "Если вы не знаете слово, то просто поставьте [-]");
+		mvwprintw(stdscr, (lines/2)-7, (columns - strlen(message_1_2)/2)/2, message_enter_1);
+
 		refresh(); // Input buffer.
 		getstr(buffer); // Input str.
 		printw("\n");
 
 		if ((str_tok(buffer, delim, session_tok) != 3) || (str_chr(buffer, numbers) != -1)) {
 			while ((str_tok(buffer, delim, session_tok) != 3) || (str_chr(buffer, numbers) != -1)) {
-				printw("Ошибка при вводе значений. Попытайся снова.\n Enter: ");
+
+				mvwprintw(stdscr, (lines/2)-7, (columns - strlen(message_1_3)/2)/2, " "); // Перемещение каретки.
+				deleteln();
+				deleteln();
+				mvwprintw(stdscr, (lines/2)-7, (columns - strlen(message_1_3)/2)/2, message_1_3);
+				mvwprintw(stdscr, (lines/2)-6, (columns - strlen(message_1_2)/2)/2, message_enter_1);
+
+				refresh();
+
 				getstr(buffer); // Input str.
 				printw("\n");
 			}
@@ -149,7 +163,12 @@ int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 			}
 		}
 	}
-	printw("Ваш результат: %d правильных из %d .\nВы хотите увидеть отчет об ошибках?\n1.Да\n2.Нет\n->", score, amount*3);
+	mvwprintw(stdscr, (lines/2)-4, (columns-strlen(message_1_4)/2)/2, "Ваш результат: %d правильных из %d.", score, amount*3);
+	mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_1_5)/2)/2, message_1_5);
+	mvwprintw(stdscr, (lines/2), ((columns/2)-strlen(message_1_6)-4), message_1_6);
+	mvwprintw(stdscr, (lines/2), ((columns/2)+strlen(message_1_6)-1), message_1_7);
+	mvwprintw(stdscr, (lines/2)+2, (columns - strlen(message_1_5)/2)/2, message_enter_1);
+
 	int input;
 	scanw("%d", &input);
 
@@ -158,20 +177,19 @@ int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 
 		clear(); // Clean win.
 		if (score == (amount*3)) {
-			printw("Вы не сделали ошибок!\n");	
+			mvwprintw(stdscr, (lines/2)-12, (columns - strlen(message_1_8)/2)/2, message_1_8);
 		} else {
 			for (int i = 0; i < amount; i++) {
-				printw("Были найдены ошибки в формах слова - [%s]\n", tab[value[i]].rus);
+				mvwprintw(stdscr, (lines/2)-12, (columns - (strlen(message_1_9)+strlen(tab[value[i]].rus))/2)/2, "Были найдены ошибки в формах слова - [%s]", tab[value[i]].rus);
 				if(data[i].hitting[0] == 1) {
-					printw("Вы ввели - %s\tПервая форма слова - %s\n", data[i].in_first_f, tab[value[i]].first_f);
+					mvwprintw(stdscr, (lines/2)-10, (columns - (strlen(message_1_9)+strlen(data[i].in_first_f)+strlen(tab[value[i]].first_f))/2)/2, "Вы ввели - %s\tПервая форма слова - %s", data[i].in_first_f, tab[value[i]].first_f);
 				}
 				if(data[i].hitting[1] == 1) {
-					printw("Вы ввели - %s\tВторая форма слова - %s\n", data[i].in_second_f, tab[value[i]].second_f);
+					mvwprintw(stdscr, (lines/2)-9, (columns - (strlen(message_1_9)+strlen(data[i].in_second_f)+strlen(tab[value[i]].second_f))/2)/2, "Вы ввели - %s\tВторая форма слова - %s", data[i].in_second_f, tab[value[i]].second_f);
 				}
 				if(data[i].hitting[2] == 1) {
-					printw("Вы ввели - %s\tТретья форма слова - %s\n", data[i].in_third_f, tab[value[i]].third_f);
+					mvwprintw(stdscr, (lines/2)-8, (columns - (strlen(message_1_9)+strlen(data[i].in_third_f)+strlen(tab[value[i]].third_f))/2)/2, "Вы ввели - %s\tТретья форма слова - %s", data[i].in_third_f, tab[value[i]].third_f);
 				}
-			printf("\n");
 			}
 		}
 		break;
