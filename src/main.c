@@ -47,7 +47,7 @@ int main(void)
 
 	scan_and_out(tab, in_data, value, n);
 
-	while( game == 0) {
+	while(game == 0) {
 
 		mvwprintw(stdscr, (lines/2)+4, (columns-strlen(message_0_6)/2)/2, message_0_6);
 		mvwprintw(stdscr, (lines/2)+6, ((columns/2)-strlen(message_0_7)), message_0_7);
@@ -102,13 +102,13 @@ int main_menu(void)
 			case KEY_UP:
 				if (choice) { // Если возиожно, переводим указатель вверх.
 					choice--;
-			}
-			break;
+				}
+				break;
 			case KEY_DOWN:
 				if (choice != 3) { // Если возможно, переводим узакатель вниз.
 					choice++;
-			}
-			break;
+				}
+				break;
 			case 10:
 				enter = true;;
 		}

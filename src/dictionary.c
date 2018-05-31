@@ -175,30 +175,25 @@ int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 
 	switch(input) {
 		case 1:
-
-		clear(); // Clean win.
-		if (score == (amount*3)) {
-			mvwprintw(stdscr, (lines/2)-12, (columns - strlen(message_1_8)/2)/2, message_1_8);
-		} else {
-			for (int i = 0; i < amount; i++) {
-				mvwprintw(stdscr, i+1, 5, "#[%d] = [%s]", i+1, tab[value[i]].rus);
-				//mvwprintw(stdscr, (lines/2)-12, (columns - (strlen(message_1_9)+strlen(tab[value[i]].rus))/2)/2, "Были найдены ошибки в формах слова - [%s]", tab[value[i]].rus);
-				if(data[i].hitting[0] == 1) {
-					mvwprintw(stdscr, i+1, (columns-10)/4*1, "Первая форма - [%s/%s]", data[i].in_first_f, tab[value[i]].first_f);
-				//	mvwprintw(stdscr, (lines/2)-10, (columns - (strlen(message_1_9)+strlen(data[i].in_first_f)+strlen(tab[value[i]].first_f))/2)/2, "Вы ввели - %s\tПервая форма слова - %s", data[i].in_first_f, tab[value[i]].first_f);
+			clear(); // Clean win.
+			if (score == (amount*3)) {
+				mvwprintw(stdscr, (lines/2)-12, (columns - strlen(message_1_8)/2)/2, message_1_8);
+			} else {
+				for (int i = 0; i < amount; i++) {
+					mvwprintw(stdscr, i+1, 5, "#[%d] = [%s]", i+1, tab[value[i]].rus);
+					if(data[i].hitting[0] == 1) {
+						mvwprintw(stdscr, i+1, (columns-10)/4*1, "Первая форма - [%s/%s]", data[i].in_first_f, tab[value[i]].first_f);
+					}
+					if(data[i].hitting[1] == 1) {
+						mvwprintw(stdscr, i+1, (columns-10)/4*2, "Вторая форма - [%s/%s]", data[i].in_second_f, tab[value[i]].second_f);
+					}
+					if(data[i].hitting[2] == 1) {
+						mvwprintw(stdscr, i+1, (columns-10)/4*3, "Третья форма - [%s/%s]", data[i].in_third_f, tab[value[i]].third_f);
+					}
+					refresh();
 				}
-				if(data[i].hitting[1] == 1) {
-					mvwprintw(stdscr, i+1, (columns-10)/4*2, "Вторая форма - [%s/%s]", data[i].in_second_f, tab[value[i]].second_f);
-				//	mvwprintw(stdscr, (lines/2)-9, (columns - (strlen(message_1_9)+strlen(data[i].in_second_f)+strlen(tab[value[i]].second_f))/2)/2, "Вы ввели - %s\tВторая форма слова - %s", data[i].in_second_f, tab[value[i]].second_f);
-				}
-				if(data[i].hitting[2] == 1) {
-					mvwprintw(stdscr, i+1, (columns-10)/4*3, "Третья форма - [%s/%s]", data[i].in_third_f, tab[value[i]].third_f);
-				//	mvwprintw(stdscr, (lines/2)-8, (columns - (strlen(message_1_9)+strlen(data[i].in_third_f)+strlen(tab[value[i]].third_f))/2)/2, "Вы ввели - %s\tТретья форма слова - %s", data[i].in_third_f, tab[value[i]].third_f);
-				}
-				refresh();
 			}
-		}
-		break;
+			break;
 		case 2:
 			return 0;
 		default:
