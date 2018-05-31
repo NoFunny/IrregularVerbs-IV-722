@@ -6,8 +6,6 @@
 
 int slen(char *str);
 
-void stok_free(char** arr);
-char** stok(char* str, char delim);
 int s_tok(char *str, char delim, char *ptr[]);
 
 int schr(char *str, char ch);
@@ -19,6 +17,9 @@ int s_cmp(char *str1, char *str2);
 int str_chr(char *str, char *ch);
 int str_tok(char *str, char *delim, char **ptr);
 
+//void stok_free(char** arr);
+
+//char** stok(char* str, char delim);
 
 //void stok_print(char** arr);
 

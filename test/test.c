@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <ctest.h>
 #include "dictionary.h"
-#include "interface.h"
 #include "string.h"
 
                                  //STRING.C//

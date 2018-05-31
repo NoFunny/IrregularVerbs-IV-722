@@ -1,5 +1,6 @@
 #include "string.h"
 #include "dictionary.h"
+#include "const_for_scan_and_out.h"
 
 int count_string(FILE * input)
 {
@@ -55,9 +56,7 @@ dictionary *dictionary_reading(dictionary *tab, int max_words_in_dictionary)
 		return NULL;
 	}
 	char *buffer = (char*)malloc(50*sizeof(char));
-	//char *russian = (char*)malloc(50*sizeof(char));
 	char  *p[10];
-	//size_t size = 50;
 
 	for (int i = 0; i < max_words_in_dictionary; i++) {
 		fscanf(dictionary, "%s", buffer);
@@ -92,94 +91,114 @@ int random_generator(int max_words_in_dictionary, int value[], int bucket[], int
 	}
 }
 
-int scan_and_out(dictionary *tab, int value[], int amount)
+int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 {
-	char buffer[100], *part[3], delim[7] = "/\\|,.; ", numbers[10] = "0123456789";
+	char buffer[100], *session_tok[3], delim[7] = "/\\|,.; ", numbers[10] = "0123456789";
 	
-	int result[100][3], result_count, score = 0;
-
-	int input = 0;
+	int hitting_of_session, score = 0, lines, columns;
 
 	for (int i = 0; i < amount; i++) {
 		int flag_du = invalid_flag;
 
 		initscr(); // IN curses-mode.
+		getmaxyx(stdscr, lines, columns);
 		clear(); // Clean window.
 
+		mvwprintw(stdscr, (lines/2)-12, (columns - (strlen(message_1_0)+strlen(tab[value[i]].rus))/2)/2, "Введите 3 формы слова [%s]", tab[value[i]].rus);
+		mvwprintw(stdscr, (lines/2)-10, (columns - (strlen(message_1_1)+sizeof(delim))/2)/2, "Через любой из разделителей [%s]", delim);
+		mvwprintw(stdscr, (lines/2)-9, (columns - strlen(message_1_2)/2)/2, "Если вы не знаете слово, то просто поставьте [-]");
+		mvwprintw(stdscr, (lines/2)-7, (columns - strlen(message_1_2)/2)/2, message_enter_1);
 
-		printw("Введите 3 формы слова [%s]\nЧерез любой из разделителей [%s]\nЕсли не знаете слово ставьте [-]\n->", tab[value[i]].rus, delim);
 		refresh(); // Input buffer.
 		getstr(buffer); // Input str.
 		printw("\n");
 
-		if ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
-			while ((str_tok(buffer, delim, part) != 3) || (str_chr(buffer, numbers) != -1)) {
-				printw("Ошибка при вводе значений. Попытайся снова.\n Enter: ");
+		if ((str_tok(buffer, delim, session_tok) != 3) || (str_chr(buffer, numbers) != -1)) {
+			while ((str_tok(buffer, delim, session_tok) != 3) || (str_chr(buffer, numbers) != -1)) {
+
+				mvwprintw(stdscr, (lines/2)-7, (columns - strlen(message_1_3)/2)/2, " "); // Перемещение каретки.
+				deleteln();
+				deleteln();
+				mvwprintw(stdscr, (lines/2)-7, (columns - strlen(message_1_3)/2)/2, message_1_3);
+				mvwprintw(stdscr, (lines/2)-6, (columns - strlen(message_1_2)/2)/2, message_enter_1);
+
+				refresh();
+
 				getstr(buffer); // Input str.
 				printw("\n");
 			}
 		}
-		
-		result_count = 0;
-		if ((s_cmp(tab[value[i]].first_f, part[0]) == 0)) {
-			result[i][0] = 0;
+
+		hitting_of_session = 0;
+		if ((s_cmp(tab[value[i]].first_f, session_tok[0]) == 0)) {
+			data[i].hitting[0] = 0;
 		} else {
-			result[i][0] = 1;
+			data[i].hitting[0] = 1;
+			data[i].in_first_f = session_tok[0];
 		}
-		if ((s_cmp(tab[value[i]].second_f, part[1]) == 0)) {
-			result[i][1] = 0;
+		if ((s_cmp(tab[value[i]].second_f, session_tok[1]) == 0)) {
+			data[i].hitting[1] = 0;
 		} else {
-			result[i][1] = 1;
+			data[i].hitting[1] = 1;
+			data[i].in_second_f = session_tok[1];
 		}
-		if ((s_cmp(tab[value[i]].third_f, part[2]) == 0)) {
-			result[i][2] = 0;
+		if ((s_cmp(tab[value[i]].third_f, session_tok[2]) == 0)) {
+			data[i].hitting[2] = 0;
 		} else {
-			result[i][2] = 1;
+			data[i].hitting[2] = 1;
+			data[i].in_third_f = session_tok[2];
 		}
 		for (int j = 0; j < 3; j++) {
-			if (result[i][j] == 0) {
-				result_count++;
+			if (data[i].hitting[j] == 0) {
+				hitting_of_session++;
 				score++;
 			}
 		}
 
 		if (i < (amount-flag_du)) {
-			if (result_count != 3) {
+			if (hitting_of_session != 3) {
 				invalid_input[flag_du] = value[i];
 				invalid_flag++;
 			}
 		}
 		if (i >= (amount-flag_du)) {
-			if (result_count == 3) {
+			if (hitting_of_session == 3) {
 				invalid_input[amount-flag_du] = invalid_input[invalid_flag-1];
 				invalid_flag--;
 			}
 		}
 	}
-	printw("Ваш результат: %d правильных из %d .\nВы хотите увидеть отчет об ошибках?\n1.Да\n2.Нет\n->", score, amount*3);
+	mvwprintw(stdscr, (lines/2)-4, (columns-strlen(message_1_4)/2)/2, "Ваш результат: %d правильных из %d.", score, amount*3);
+	mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_1_5)/2)/2, message_1_5);
+	mvwprintw(stdscr, (lines/2), ((columns/2)-strlen(message_1_6)-4), message_1_6);
+	mvwprintw(stdscr, (lines/2), ((columns/2)+strlen(message_1_6)-1), message_1_7);
+	mvwprintw(stdscr, (lines/2)+2, (columns - strlen(message_1_5)/2)/2, message_enter_1);
+	refresh();
+
+	int input;
 	scanw("%d", &input);
 
 	switch(input) {
 		case 1:
-		clear(); // Clean win.
-		for (int i = 0; i < amount; i++) {
-			if (score != amount*3) {
-				printw("Были найдены ошибки в формах слова - [%s]\n", tab[value[i]].rus);
-				if(result[i][0] == 1) {
-					printw("Вы ввели - %s\tПервая форма слова - %s\n", part[0], tab[value[i]].first_f);
-				}
-				if(result[i][1] == 1) {
-					printw("Вы ввели - %s\tВторая форма слова - %s\n", part[1], tab[value[i]].second_f);
-				}
-				if(result[i][2] == 1) {
-					printw("Вы ввели - %s\tТретья форма слова - %s\n", part[2], tab[value[i]].third_f);
-				}
+			clear(); // Clean win.
+			if (score == (amount*3)) {
+				mvwprintw(stdscr, (lines/2)-12, (columns - strlen(message_1_8)/2)/2, message_1_8);
 			} else {
-				printw("Вы не сделали ошибок!\n");
+				for (int i = 0; i < amount; i++) {
+					mvwprintw(stdscr, i+1, 5, "#[%d] = [%s]", i+1, tab[value[i]].rus);
+					if(data[i].hitting[0] == 1) {
+						mvwprintw(stdscr, i+1, (columns-10)/4*1, "Первая форма - [%s/%s]", data[i].in_first_f, tab[value[i]].first_f);
+					}
+					if(data[i].hitting[1] == 1) {
+						mvwprintw(stdscr, i+1, (columns-10)/4*2, "Вторая форма - [%s/%s]", data[i].in_second_f, tab[value[i]].second_f);
+					}
+					if(data[i].hitting[2] == 1) {
+						mvwprintw(stdscr, i+1, (columns-10)/4*3, "Третья форма - [%s/%s]", data[i].in_third_f, tab[value[i]].third_f);
+					}
+					refresh();
+				}
 			}
-			printw("\n");
-		}
-		break;
+			break;
 		case 2:
 			return 0;
 		default:
