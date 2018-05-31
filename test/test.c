@@ -32,10 +32,6 @@ CTEST(string, S_TOK) //Разбиение строки
 	//When
 	int real = s_tok(str, delim, ptr);
 	int real1 = s_tok(str, delim_1, ptr);
-	// printf("%d\n", real);
-	// printf("%s\n", ptr[1]);
-	// printf("%s\n", ptr[2]);
-	// printf("%s\n", ptr[3]);
 
 	//Then
 	const int expected = 3;
@@ -65,15 +61,15 @@ CTEST(string, SCHR) //Поиск символа в строке
 CTEST(string, SCOPY) //Копирование строки
 {
 	//Given
-	char str[19] = "write;wrote;written";
-	char str_1[0] = "";
+	char str[] = "write;wrote;written";
+	char str_1[] = "";
 	
 	//When
-	int real = scopy(str, str_1);
+	scopy(str_1,str);
 
 	//Then
-	const int expected = 1;
-	ASSERT_EQUAL(expected, real);
+	// const int expected = 1;
+	ASSERT_STR(str, str_1);
 }
 
 CTEST(string, S_CMP)  //Сравнение строк
@@ -181,7 +177,7 @@ CTEST(dictionary, READING) //Проверка чтения словаря
 	ASSERT_NULL(real1);
 }
 
-CTEST(dictionary, RANDOM_GEN) //Проверка чтения словаря
+CTEST(dictionary, RANDOM_GEN) //Проверка генератора рандомных чисел
 {	
 	// //Given
 	int n = 5;
@@ -203,6 +199,19 @@ CTEST(dictionary, RANDOM_GEN) //Проверка чтения словаря
 	const int expected_1 = 0;
 	ASSERT_EQUAL(expected, real);
 	ASSERT_EQUAL(expected_1, real1);
-	// ASSERT_NULL(value);
 }
 
+CTEST(dictionary, D_CLEAN) //Проверка очищения массива и структуры данных
+{	
+	// //Given
+	int max_words_in_dictionary = 100;
+	int *value = (int*)malloc(sizeof(int)*max_words_in_dictionary);
+	dictionary *tab = dictionary_init(max_words_in_dictionary);
+
+	//When
+	int real = dictionary_clean(tab, value);
+
+	//Then
+	const int expected = 1;
+	ASSERT_EQUAL(expected, real);
+}	

@@ -208,8 +208,15 @@ int scan_and_out(dictionary *tab, data *data, int value[], int amount)
 	return 0;
 }				
 
-void dictionary_clean(dictionary *tab, int value[])
+int dictionary_clean(dictionary *tab, int value[])
 {
 	free(tab);
 	free(value);
+	value = NULL;
+	tab = NULL;
+	if((value == NULL) && (tab == NULL)) {
+		return 1;
+	} else {
+		return 0;
+	} 
 }

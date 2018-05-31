@@ -37,6 +37,6 @@ int random_generator(int max_words_in_dictionary, int value[], int bucket[], int
 // Ввод слов.
 int scan_and_out(dictionary *tab, data *data, int value[], int amount);
 // Очистка всех элементов.
-void dictionary_clean(dictionary *tab, int value[]);
+int dictionary_clean(dictionary *tab, int value[]);
 
 #endif
