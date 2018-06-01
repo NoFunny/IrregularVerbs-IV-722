@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <ctest.h>
-#include "dictionary.h"
+#include "working_with_data.h"
 #include "string.h"
 
-                                 //STRING.C//
+//STRING.C
 CTEST(string, SLEN) //Длина строки
 {
 	//Given
@@ -68,30 +68,28 @@ CTEST(string, SCOPY) //Копирование строки
 	scopy(str_1,str);
 
 	//Then
-	// const int expected = 1;
 	ASSERT_STR(str, str_1);
 }
 
 CTEST(string, S_CMP)  //Сравнение строк
 {
 	//Given
-	char str1[19] = "write;wrote;written";
- 	char str_1[19] = "write;wrote;written";
+	char str1[] = "write;wrote;written";
+ 	char str_1[] = "write;wrote;written";
  	
- 	char str2[19] = "write;wrote;written";
- 	char str_2[5] = "write";
+ 	char str2[] = "write;wrote;written";
+ 	char str_2[] = "write";
 
 	//When
 	int real = s_cmp(str1, str_1);
 	int real1 = s_cmp(str2, str_2);
 
 	//Then
-	const int expected = 1;
-	const int expected1 = -1;
+	const int expected = 0;
+	const int expected1 = 1;
 	ASSERT_EQUAL(expected, real);
 	ASSERT_EQUAL(expected1, real1);
 }
-
 
 CTEST(string, STR_CHR) //Поиск подстроки в строке
 {
@@ -125,10 +123,8 @@ CTEST(string, STR_TOK) //Разбиение строки
 	ASSERT_EQUAL(expected, real);
 }
 
-
-
-                           		 //DICTIONARY.C//
-CTEST(dictionary, C_STRING) //Проверка подсчета размера словаря
+//DICTIONARY.C
+CTEST(working_with_data, C_STRING) //Проверка подсчета размера словаря
 {	
 	//Given
 	FILE *input = fopen("dictionary.txt", "r");
@@ -201,7 +197,7 @@ CTEST(dictionary, RANDOM_GEN) //Проверка генератора рандо
 	ASSERT_EQUAL(expected_1, real1);
 }
 
-CTEST(dictionary, D_CLEAN) //Проверка очищения массива и структуры данных
+CTEST(working_with_data, D_CLEAN) //Проверка очищения массива и структуры данных
 {	
 	// //Given
 	int max_words_in_dictionary = 100;

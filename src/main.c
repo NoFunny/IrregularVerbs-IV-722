@@ -1,4 +1,4 @@
-#include "dictionary.h"
+#include "working_with_data.h"
 
 #include "const_for_main_menu.h"
 
@@ -8,9 +8,11 @@ int main_menu(void);
 
 int main(void)
 {
+	detailed_result = false;
 	invalid_flag = 0, flag_0 = 0;
-	FILE *input = fopen("dictionary.txt", "r");
 	int n, intput, game = 0, lines, columns;
+
+	FILE *input = fopen("dictionary.txt", "r");
 
 	setlocale( 0, "" );
 	initscr();
@@ -21,11 +23,11 @@ int main(void)
 		return 0;
 	}
 
-	int max_words_in_dictionary = count_string(input);
-	dictionary *tab = dictionary_init(max_words_in_dictionary);
+	max_words_in_dictionary = count_string(input);
+	dictionary *tabl = dictionary_init(max_words_in_dictionary);
 	data *in_data = (data*)malloc(sizeof(data)*max_words_in_dictionary);
 
-	dictionary_reading(tab, max_words_in_dictionary);
+	dictionary_reading(tabl, max_words_in_dictionary);
 
 	if ((n = main_menu()) == 0) {
 		n = 1;
@@ -45,20 +47,28 @@ int main(void)
 
 	random_generator(max_words_in_dictionary, value, bucket, n);
 
-	scan_and_out(tab, in_data, value, n);
+	scan_and_out(tabl, in_data, value, n);
 
 	while(game == 0) {
 
-		mvwprintw(stdscr, (lines/2)+4, (columns-strlen(message_0_6)/2)/2, message_0_6);
-		mvwprintw(stdscr, (lines/2)+6, ((columns/2)-strlen(message_0_7)), message_0_7);
-		mvwprintw(stdscr, (lines/2)+6, ((columns/2)+3), message_0_8);
-		mvwprintw(stdscr, (lines/2)+8, (columns-strlen(message_0_6)/2)/2, message_enter_0);
+		if (detailed_result == true) {
+			mvwprintw(stdscr, lines-7, (columns-strlen(message_0_6)/2)/2, message_0_6);
+			mvwprintw(stdscr, lines-5, ((columns/2)-strlen(message_0_7)), message_0_7);
+			mvwprintw(stdscr, lines-5, ((columns/2)+3), message_0_8);
+			mvwprintw(stdscr, lines-3, (columns-strlen(message_0_6)/2)/2, message_enter_0);
+		} else {
+			mvwprintw(stdscr, (lines/2)+4, (columns-strlen(message_0_6)/2)/2, message_0_6);
+			mvwprintw(stdscr, (lines/2)+6, ((columns/2)-strlen(message_0_7)), message_0_7);
+			mvwprintw(stdscr, (lines/2)+6, ((columns/2)+3), message_0_8);
+			mvwprintw(stdscr, (lines/2)+8, (columns-strlen(message_0_6)/2)/2, message_enter_0);
+		}
+
 		scanw("%d", &intput);
 
 		switch(intput) {
 			case 1:
 				random_generator(max_words_in_dictionary, value, bucket, n+invalid_flag);
-				scan_and_out(tab, in_data, value, n+invalid_flag);
+				scan_and_out(tabl, in_data, value, n+invalid_flag);
 				break;
 			case 2:
 				game = 1;
@@ -66,7 +76,7 @@ int main(void)
 		}
 
 	}
-	dictionary_clean(tab, value);
+	dictionary_clean(tabl, value);
 	endwin();
 
 	return 0;
@@ -79,9 +89,11 @@ int main_menu(void)
 	unsigned i, lines, columns, choice = 0;
 
 	getmaxyx(stdscr, lines, columns); // Записываем максимальное кол-во строк и столбцов в переменные.
-	mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_0_0)/2)/2, "%s", message_0_0); // Вывод message_0_0.
-	mvwprintw(stdscr, (lines/2)-1, (columns-strlen(message_0_2)/2)/2, "%s", message_0_2);	// Вывод message_0_2.
-	mvwprintw(stdscr, (lines/2)-0, (columns-strlen(message_0_4)/2)/2, "%s", message_0_4);	// Вывод message_0_4.
+	mvwprintw(stdscr, (lines/2)-4, (columns - strlen(message_0_0)/2)/2, message_0_0); // Вывод message_0_0.
+	mvwprintw(stdscr, (lines/2)-2, (columns - strlen(message_0_2)/2)/2, message_0_2);	// Вывод message_0_2.
+	mvwprintw(stdscr, (lines/2)-0, (columns - strlen(message_0_4)/2)/2, message_0_4);	// Вывод message_0_4.
+	mvwprintw(stdscr, lines-6, (columns - strlen(message_0_9)/2)/2, message_0_9);
+	mvwprintw(stdscr, lines-4, (columns - strlen(message_0_10)/2)/2, message_0_10);
 	getch(); // Ожидание нажатия какой-либо клавиши пользователем.
 
 	curs_set(0); // Выключение курсора.
@@ -89,13 +101,13 @@ int main_menu(void)
 	while (enter == false) {
 		clear();
 		for (i = 0; i < 4; i++) {
-			mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_0_5)/2)/2, "%s", message_0_5);
+			mvwprintw(stdscr, (lines/2)-2, (columns-strlen(message_0_5)/2)/2, message_0_5);
 			if(i == choice) {
 				mvwaddch(stdscr, (lines/2)+i, (columns-strlen(menu[i])/2)/2-1, '>');
 			} else {
 				mvwaddch(stdscr, (lines/2)+i, (columns-strlen(menu[i])/2)/2-1, ' '); // Пробел для равновесия.
 			}
-			mvwprintw(stdscr, (lines/2)+i, (columns-strlen(menu[i])/2)/2, "%s", menu[i]);
+			mvwprintw(stdscr, (lines/2)+i, (columns-strlen(menu[i])/2)/2, menu[i]);
 		}
 		// Получение пользовательского нажатия.
 		switch (getch()) {

@@ -10,9 +10,9 @@ const char *message_1_6 = "1 - Да";
 const char *message_1_7 = "2 - Нет";
 
 const char *message_1_8 = "Вы не сделали ошибок!";
-const char *message_1_9 = "Были найдены ошибки в формах слова - []";
-const char *message_1_10 = "Вы ввели - Первая форма слова - ";
-const char *message_1_11 = "Вы ввели - Вторая форма слова - ";
-const char *message_1_12 = "Вы ввели - Третья форма слова - ";
+const char *message_1_9 = "Первая форма.";
+const char *message_1_10 = "Вторая форма.";
+const char *message_1_11 = "Третья форма.";
 
+const char *message_1_12 = "Поздравляем, вы успешно завершили тестирование !";
 const char *message_enter_1 = "Ввод: ";
